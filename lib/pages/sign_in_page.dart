@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:nasi_igut_han/components/text_form_field.dart';
+import 'package:nasi_igut_han/widgets/text_form_field.dart';
 
 class MySignInPage extends StatefulWidget {
   const MySignInPage({super.key});
@@ -14,6 +14,8 @@ class _MySignInPageState extends State<MySignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(Theme.of(context).colorScheme);
+    print(Theme.of(context).colorScheme.toString());
     return Scaffold(
       body: Center(
         child: SizedBox(
