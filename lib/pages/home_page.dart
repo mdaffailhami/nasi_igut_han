@@ -6,6 +6,7 @@ import 'package:nasi_igut_han/components/contact_us_form.dart';
 import 'package:nasi_igut_han/components/drawer.dart';
 import 'package:nasi_igut_han/components/faq.dart';
 import 'package:nasi_igut_han/components/footer.dart';
+import 'package:nasi_igut_han/components/products.dart';
 import 'package:nasi_igut_han/components/quote.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -84,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Wrap(
                               runSpacing: 30,
                               children: const [
+                                MyProducts(),
                                 MyFAQ(),
                               ],
                             ),
