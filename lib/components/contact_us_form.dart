@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class MyContactUsForm extends StatefulWidget {
   const MyContactUsForm({Key? key}) : super(key: key);
@@ -139,40 +137,40 @@ class _MyContactUsFormState extends State<MyContactUsForm> {
                     height: 32,
                     child: FilledButton(
                       onPressed: () async {
-                        final Uri url = Uri.parse(
-                          'https://mdaffailhami.herokuapp.com/api/contact-me',
-                        );
+                        // final Uri url = Uri.parse(
+                        //   'https://mdaffailhami.herokuapp.com/api/contact-me',
+                        // );
 
-                        final Map data = {
-                          'name': _name,
-                          'email': _email,
-                          'message': _message,
-                        };
+                        // final Map data = {
+                        //   'name': _name,
+                        //   'email': _email,
+                        //   'message': _message,
+                        // };
 
-                        setState(() {
-                          _isSending = true;
-                        });
+                        // setState(() {
+                        //   _isSending = true;
+                        // });
 
-                        try {
-                          http.Response send = await http.post(url, body: data);
-                          Map responseBody = jsonDecode(send.body);
+                        // try {
+                        //   http.Response send = await http.post(url, body: data);
+                        //   Map responseBody = jsonDecode(send.body);
 
-                          setState(() {
-                            _isSending = false;
-                          });
+                        //   setState(() {
+                        //     _isSending = false;
+                        //   });
 
-                          if (responseBody['status']) {
-                            sendMessageSuccessSnackBar();
-                          } else {
-                            sendMessageFailedSnackBar();
-                          }
-                        } catch (e) {
-                          setState(() {
-                            _isSending = false;
-                          });
+                        //   if (responseBody['status']) {
+                        //     sendMessageSuccessSnackBar();
+                        //   } else {
+                        //     sendMessageFailedSnackBar();
+                        //   }
+                        // } catch (e) {
+                        //   setState(() {
+                        //     _isSending = false;
+                        //   });
 
-                          sendMessageFailedSnackBar();
-                        }
+                        //   sendMessageFailedSnackBar();
+                        // }
                       },
                       child: const Text('Kirim'),
                     ),

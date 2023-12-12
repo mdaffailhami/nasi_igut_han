@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nasi_igut_han/models/admin.dart';
+import 'package:nasi_igut_han/pages/admin_home_page.dart';
 import 'package:nasi_igut_han/widgets/text_form_field.dart';
 
 class MySignInPage extends StatefulWidget {
@@ -12,10 +14,39 @@ class MySignInPage extends StatefulWidget {
 class _MySignInPageState extends State<MySignInPage> {
   final ValueNotifier<bool> _isPasswordVisible = ValueNotifier<bool>(false);
 
+  final Admin _admin = Admin(email: '', password: '');
+
+  Future<void> onFieldSubmitted() async {
+    if (await Admin.validateSignIn(_admin) && context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MyAdminHomePage(),
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const SelectableText('Email atau password salah'),
+            content: const SelectableText(
+              'Email atau password yang anda masukkan salah,\nsilahkan coba lagi!',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Oke'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(Theme.of(context).colorScheme);
-    print(Theme.of(context).colorScheme.toString());
     return Scaffold(
       body: Center(
         child: SizedBox(
@@ -33,13 +64,23 @@ class _MySignInPageState extends State<MySignInPage> {
                 width: 180,
                 height: 180,
               ),
-              const MyTextFormField(labelText: 'Email'),
+              MyTextFormField(
+                labelText: 'Email',
+                onFieldSubmitted: (value) => onFieldSubmitted(),
+                onChanged: (String value) {
+                  _admin.email = value;
+                },
+              ),
               ValueListenableBuilder(
                 valueListenable: _isPasswordVisible,
                 builder: (context, value, child) {
                   return MyTextFormField(
                     labelText: 'Password',
                     obscureText: !value,
+                    onFieldSubmitted: (value) => onFieldSubmitted(),
+                    onChanged: (String value) {
+                      _admin.password = value;
+                    },
                     suffixIcon: IconButton(
                       onPressed: () {
                         _isPasswordVisible.value = !value;
@@ -70,7 +111,7 @@ class _MySignInPageState extends State<MySignInPage> {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: () {},
+                  onPressed: onFieldSubmitted,
                   child: const Text('Masuk'),
                 ),
               )
