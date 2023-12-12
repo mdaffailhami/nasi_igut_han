@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         useMaterial3: true,
       ),
-      home: const MySignInPage(),
+      home: const MyHomePage(),
     );
   }
 }

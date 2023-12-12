@@ -18,31 +18,31 @@ class MyProfile extends StatelessWidget {
           'Nasi Igut Han',
           style: TextStyle(fontSize: 32, color: Colors.white),
         ),
-        const SizedBox(height: 2),
-        RichText(
-          text: TextSpan(
-            style:
-                Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
-            children: [
-              const TextSpan(text: '<'),
-              TextSpan(
-                  text: 'code',
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondaryContainer)),
-              const TextSpan(text: '> Programmer'),
-              TextSpan(
-                  text: ' | ',
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondaryContainer)),
-              const TextSpan(text: 'Developer </'),
-              TextSpan(
-                  text: 'code',
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondaryContainer)),
-              const TextSpan(text: '>'),
-            ],
-          ),
-        ),
+        // const SizedBox(height: 2),
+        // RichText(
+        //   text: TextSpan(
+        //     style:
+        //         Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
+        //     children: [
+        //       const TextSpan(text: '<'),
+        //       TextSpan(
+        //           text: 'code',
+        //           style: TextStyle(
+        //               color: Theme.of(context).colorScheme.secondaryContainer)),
+        //       const TextSpan(text: '> Programmer'),
+        //       TextSpan(
+        //           text: ' | ',
+        //           style: TextStyle(
+        //               color: Theme.of(context).colorScheme.secondaryContainer)),
+        //       const TextSpan(text: 'Developer </'),
+        //       TextSpan(
+        //           text: 'code',
+        //           style: TextStyle(
+        //               color: Theme.of(context).colorScheme.secondaryContainer)),
+        //       const TextSpan(text: '>'),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
