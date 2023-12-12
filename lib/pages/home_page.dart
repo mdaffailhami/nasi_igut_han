@@ -6,6 +6,7 @@ import 'package:nasi_igut_han/components/contact_us_form.dart';
 import 'package:nasi_igut_han/components/drawer.dart';
 import 'package:nasi_igut_han/components/faq.dart';
 import 'package:nasi_igut_han/components/footer.dart';
+import 'package:nasi_igut_han/components/quote.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -68,13 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       children: [
                         const MyAboutUs(),
-                        const SizedBox(height: 5),
-                        Text('Produk Kami',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(color: Colors.white)),
-                        const SizedBox(height: 40),
+                        const MyQuote(),
                         Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.background,

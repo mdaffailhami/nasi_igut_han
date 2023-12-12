@@ -80,7 +80,7 @@ class MyAppBar extends StatelessWidget {
                     MyNavigationButton(
                       componentKey: MyAboutUs.componentKey,
                       child: Text(
-                        'About Me',
+                        'Tentang Kami',
                         style: TextStyle(
                             color: isShrink ? Colors.black : Colors.white),
                       ),
