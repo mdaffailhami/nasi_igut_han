@@ -9,6 +9,9 @@ class MyProducts extends StatelessWidget {
   static final GlobalKey componentKey = GlobalKey();
 
   @override
+  Key? get key => componentKey;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
