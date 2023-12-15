@@ -23,8 +23,8 @@ class MyProductCard extends StatelessWidget {
       surfaceTintColor: const Color(0xFFFFFFFF),
       elevation: 7,
       child: SizedBox(
-        width: 220,
-        height: 300,
+        width: 260,
+        height: 360,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -43,7 +43,7 @@ class MyProductCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -54,16 +54,16 @@ class MyProductCard extends StatelessWidget {
                         .titleLarge
                         ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                  const SizedBox(height: 4),
-                  SelectableText(
+                  const SizedBox(height: 6),
+                  Text(
                     product.description,
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          overflow: TextOverflow.ellipsis,
-                          color: Color.fromARGB(255, 114, 114, 114),
+                          color: const Color.fromARGB(255, 114, 114, 114),
                           fontSize: 13,
                         ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                   SelectableText(
                     product.price.toString(),
                     style: TextStyle(
@@ -73,7 +73,7 @@ class MyProductCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(

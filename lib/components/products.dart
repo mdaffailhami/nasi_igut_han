@@ -19,8 +19,8 @@ class MyProducts extends StatelessWidget {
           children: [
             MyProductCard(
               product: Product(
-                name: 'Nama Produk',
-                description: 'Deskripsi lurr uwu wadidaw',
+                name: 'Akane Kurokawa',
+                description: 'Dijual waifu tercantik & terjenius di dunia',
                 imageUrl:
                     'https://i.pinimg.com/736x/27/fd/71/27fd71e5108c40a02034cf15daf76c58.jpg',
                 price: Rupiah(10000),
@@ -28,8 +28,8 @@ class MyProducts extends StatelessWidget {
             ),
             MyProductCard(
               product: Product(
-                name: 'Nama Produk',
-                description: 'Deskripsi lurr uwu wadidaw',
+                name: 'Akane Kurokawa',
+                description: 'Dijual waifu tercantik & terjenius di dunia',
                 imageUrl:
                     'https://i.pinimg.com/736x/27/fd/71/27fd71e5108c40a02034cf15daf76c58.jpg',
                 price: Rupiah(10000),
@@ -37,8 +37,8 @@ class MyProducts extends StatelessWidget {
             ),
             MyProductCard(
               product: Product(
-                name: 'Nama Produk',
-                description: 'Deskripsi lurr uwu wadidaw',
+                name: 'Akane Kurokawa',
+                description: 'Dijual waifu tercantik & terjenius di dunia',
                 imageUrl:
                     'https://i.pinimg.com/736x/27/fd/71/27fd71e5108c40a02034cf15daf76c58.jpg',
                 price: Rupiah(10000),
@@ -46,8 +46,8 @@ class MyProducts extends StatelessWidget {
             ),
             MyProductCard(
               product: Product(
-                name: 'Nama Produk',
-                description: 'Deskripsi lurr uwu wadidaw',
+                name: 'Akane Kurokawa',
+                description: 'Dijual waifu tercantik & terjenius di dunia',
                 imageUrl:
                     'https://i.pinimg.com/736x/27/fd/71/27fd71e5108c40a02034cf15daf76c58.jpg',
                 price: Rupiah(10000),
