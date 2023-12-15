@@ -22,7 +22,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final ScrollController _scrollController = ScrollController();
 
-  final ValueNotifier<bool> isShrink = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> isShrink = ValueNotifier<bool>(false);
 
   _scrollListener() {
     isShrink.value = _scrollController.hasClients &&

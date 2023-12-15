@@ -3,6 +3,7 @@ import 'package:nasi_igut_han/components/about_us.dart';
 import 'package:nasi_igut_han/components/banner.dart';
 import 'package:nasi_igut_han/components/contact_us_form.dart';
 import 'package:nasi_igut_han/components/faq.dart';
+import 'package:nasi_igut_han/components/products.dart';
 import 'package:nasi_igut_han/other/responsive_builder.dart';
 import 'package:nasi_igut_han/widgets/navigation_button.dart';
 
@@ -81,6 +82,14 @@ class MyAppBar extends StatelessWidget {
                       componentKey: MyAboutUs.componentKey,
                       child: Text(
                         'Tentang Kami',
+                        style: TextStyle(
+                            color: isShrink ? Colors.black : Colors.white),
+                      ),
+                    ),
+                    MyNavigationButton(
+                      componentKey: MyProducts.componentKey,
+                      child: Text(
+                        'Produk Kami',
                         style: TextStyle(
                             color: isShrink ? Colors.black : Colors.white),
                       ),

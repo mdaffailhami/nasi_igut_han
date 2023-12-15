@@ -6,6 +6,8 @@ import 'package:nasi_igut_han/widgets/product_card.dart';
 class MyProducts extends StatelessWidget {
   const MyProducts({super.key});
 
+  static final GlobalKey componentKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Column(
