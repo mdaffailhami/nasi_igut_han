@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       children: [
                         const MyAboutUs(),
-                        const MyQuote(),
+                        const MyFAQ(),
                         Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.background,
@@ -82,11 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 vertical: 30,
                                 horizontal:
                                     MediaQuery.of(context).size.width * 0.06),
-                            child: Wrap(
+                            child: const Wrap(
                               runSpacing: 30,
-                              children: const [
+                              children: [
                                 MyProducts(),
-                                MyFAQ(),
                               ],
                             ),
                           ),

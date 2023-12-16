@@ -15,7 +15,7 @@ class MyProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Produk Kami', style: Theme.of(context).textTheme.headlineMedium),
+        Text('Produk Kami', style: Theme.of(context).textTheme.headlineLarge),
         const Divider(),
         Wrap(
           alignment: WrapAlignment.center,
