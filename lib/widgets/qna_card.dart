@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nasi_igut_han/models/qna.dart';
+import 'package:nasi_igut_han/providers/qnas_provider.dart';
 
-class MyQnACard extends StatelessWidget {
+class MyQnACard extends ConsumerWidget {
   const MyQnACard({
     Key? key,
-    required this.question,
-    required this.answer,
+    required this.qna,
+    this.showEditAndDeleteButton = false,
   }) : super(key: key);
 
-  final String question;
-  final String answer;
+  final QNA qna;
+  final bool showEditAndDeleteButton;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context, ref) {
+    final card = Container(
       constraints: const BoxConstraints(maxWidth: 400),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -42,7 +45,7 @@ class MyQnACard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 3),
                       child: SelectableText(
-                        question,
+                        qna.question,
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium
@@ -73,7 +76,7 @@ class MyQnACard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 3),
                       child: SelectableText(
-                        answer,
+                        qna.answer,
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium
@@ -88,5 +91,33 @@ class MyQnACard extends StatelessWidget {
         ),
       ),
     );
+
+    if (!showEditAndDeleteButton) {
+      return card;
+    } else {
+      return Stack(
+        children: [
+          card,
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: PopupMenuButton(
+                onSelected: (value) {
+                  if (value == 2) {
+                    ref.read(qnasProvider.notifier).deleteOne(qna);
+                  }
+                },
+                itemBuilder: (context) {
+                  return const [
+                    PopupMenuItem(value: 1, child: Text('Edit')),
+                    PopupMenuItem(value: 2, child: Text('Hapus')),
+                  ];
+                },
+              ),
+            ),
+          ),
+        ],
+      );
+    }
   }
 }

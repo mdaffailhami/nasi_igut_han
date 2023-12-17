@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nasi_igut_han/models/admin.dart';
-import 'package:nasi_igut_han/pages/admin_home_page.dart';
 import 'package:nasi_igut_han/pages/home_page.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
 import 'package:nasi_igut_han/widgets/text_form_field.dart';
