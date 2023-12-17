@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nasi_igut_han/models/admin.dart';
 import 'package:nasi_igut_han/pages/admin_home_page.dart';
 import 'package:nasi_igut_han/pages/home_page.dart';
-import 'package:nasi_igut_han/providers/admin.dart';
+import 'package:nasi_igut_han/providers/admin_provider.dart';
 import 'package:nasi_igut_han/widgets/text_form_field.dart';
 
 class MySignInPage extends ConsumerStatefulWidget {
@@ -19,7 +19,7 @@ class _MySignInPageState extends ConsumerState<MySignInPage> {
 
   final Admin _admin = Admin(email: '', password: '');
 
-  Future<void> onFieldSubmitted() async {
+  Future<void> onFormSubmitted() async {
     if (await Admin.validateSignIn(_admin) && context.mounted) {
       ref.read(adminProvider.notifier).set(_admin);
 
@@ -71,7 +71,7 @@ class _MySignInPageState extends ConsumerState<MySignInPage> {
               ),
               MyTextFormField(
                 labelText: 'Email',
-                onFieldSubmitted: (value) => onFieldSubmitted(),
+                onFieldSubmitted: (value) => onFormSubmitted(),
                 onChanged: (String value) {
                   _admin.email = value;
                 },
@@ -82,7 +82,7 @@ class _MySignInPageState extends ConsumerState<MySignInPage> {
                   return MyTextFormField(
                     labelText: 'Password',
                     obscureText: !value,
-                    onFieldSubmitted: (value) => onFieldSubmitted(),
+                    onFieldSubmitted: (value) => onFormSubmitted(),
                     onChanged: (String value) {
                       _admin.password = value;
                     },
@@ -116,7 +116,7 @@ class _MySignInPageState extends ConsumerState<MySignInPage> {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: onFieldSubmitted,
+                  onPressed: onFormSubmitted,
                   child: const Text('Masuk'),
                 ),
               )

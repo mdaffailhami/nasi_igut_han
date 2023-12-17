@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nasi_igut_han/components/add_qna_form.dart';
 import 'package:nasi_igut_han/models/qna.dart';
-import 'package:nasi_igut_han/providers/admin.dart';
+import 'package:nasi_igut_han/providers/admin_provider.dart';
+import 'package:nasi_igut_han/providers/qnas_provider.dart';
 import 'package:nasi_igut_han/widgets/qna_card.dart';
+import 'package:nasi_igut_han/widgets/text_form_field.dart';
 
 class MyFAQ extends ConsumerWidget {
   const MyFAQ({Key? key}) : super(key: key);
@@ -14,7 +17,6 @@ class MyFAQ extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final admin = ref.watch(adminProvider);
     return Padding(
       padding: EdgeInsets.fromLTRB(
         MediaQuery.of(context).size.width * 0.06,
@@ -24,30 +26,70 @@ class MyFAQ extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          Text(
-            'FAQ',
-            style: Theme.of(context)
-                .textTheme
-                .headlineLarge
-                ?.copyWith(color: Colors.white),
-          ),
-          admin == null
-              ? Center(child: Text('BUKAN ADMIN'))
-              : Center(child: Text('ADMIN')),
-          const Divider(),
-          FutureBuilder<List<QNA>>(
-            future: QNA.find(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final cards = snapshot.data?.map((qna) {
-                  return MyQnACard(question: qna.question, answer: qna.answer);
-                });
+          Consumer(builder: (context, ref, child) {
+            final admin = ref.watch(adminProvider);
 
-                return Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 20,
-                  runSpacing: 12,
-                  children: cards!.toList(),
+            final title = Text(
+              'FAQ',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineLarge
+                  ?.copyWith(color: Colors.white),
+            );
+
+            if (admin == null) {
+              return title;
+            } else {
+              return SizedBox(
+                width: double.infinity,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    title,
+                    Positioned.fill(
+                        child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FilledButton.icon(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const MyAddQNAForm();
+                            },
+                          );
+                        },
+                        icon: const Icon(Icons.add),
+                        label: const Text('Tambah QNA'),
+                      ),
+                    ))
+                  ],
+                ),
+              );
+            }
+          }),
+          const Divider(),
+          FutureBuilder(
+            future: ref.read(qnasProvider.notifier).load(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Consumer(
+                  builder: (context, ref, child) {
+                    final qnas = ref.watch(qnasProvider);
+
+                    final cards = (qnas as List).map((qna) {
+                      return MyQnACard(
+                        question: qna.question,
+                        answer: qna.answer,
+                      );
+                    });
+
+                    return Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 20,
+                      runSpacing: 12,
+                      children: cards.toList(),
+                    );
+                  },
                 );
               } else if (snapshot.hasError) {
                 debugPrint(snapshot.error.toString());
