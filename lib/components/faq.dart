@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/models/qna.dart';
+import 'package:nasi_igut_han/providers/admin.dart';
 import 'package:nasi_igut_han/widgets/qna_card.dart';
 
-class MyFAQ extends StatelessWidget {
+class MyFAQ extends ConsumerWidget {
   const MyFAQ({Key? key}) : super(key: key);
 
   static final GlobalKey componentKey = GlobalKey();
@@ -11,7 +13,8 @@ class MyFAQ extends StatelessWidget {
   Key? get key => componentKey;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final admin = ref.watch(adminProvider);
     return Padding(
       padding: EdgeInsets.fromLTRB(
         MediaQuery.of(context).size.width * 0.06,
@@ -28,6 +31,9 @@ class MyFAQ extends StatelessWidget {
                 .headlineLarge
                 ?.copyWith(color: Colors.white),
           ),
+          admin == null
+              ? Center(child: Text('BUKAN ADMIN'))
+              : Center(child: Text('ADMIN')),
           const Divider(),
           FutureBuilder<List<QNA>>(
             future: QNA.find(),

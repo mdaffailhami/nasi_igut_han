@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nasi_igut_han/models/admin.dart';
 import 'package:nasi_igut_han/pages/admin_home_page.dart';
+import 'package:nasi_igut_han/pages/home_page.dart';
+import 'package:nasi_igut_han/providers/admin.dart';
 import 'package:nasi_igut_han/widgets/text_form_field.dart';
 
-class MySignInPage extends StatefulWidget {
+class MySignInPage extends ConsumerStatefulWidget {
   const MySignInPage({super.key});
 
   @override
-  State<MySignInPage> createState() => _MySignInPageState();
+  ConsumerState<MySignInPage> createState() => _MySignInPageState();
 }
 
-class _MySignInPageState extends State<MySignInPage> {
+class _MySignInPageState extends ConsumerState<MySignInPage> {
   final ValueNotifier<bool> _isPasswordVisible = ValueNotifier<bool>(false);
 
   final Admin _admin = Admin(email: '', password: '');
 
   Future<void> onFieldSubmitted() async {
     if (await Admin.validateSignIn(_admin) && context.mounted) {
+      ref.read(adminProvider.notifier).set(_admin);
+
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const MyAdminHomePage(),
+          builder: (context) => const MyHomePage(),
         ),
       );
     } else {
