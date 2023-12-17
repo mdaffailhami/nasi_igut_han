@@ -20,8 +20,8 @@ class _MySignInPageState extends ConsumerState<MySignInPage> {
   final Admin _admin = Admin(email: '', password: '');
 
   Future<void> onFormSubmitted() async {
-    if (await Admin.validateSignIn(_admin) && context.mounted) {
-      ref.read(adminProvider.notifier).set(_admin);
+    if (await ref.read(adminProvider.notifier).signIn(_admin)) {
+      if (!context.mounted) return;
 
       Navigator.push(
         context,
@@ -30,6 +30,8 @@ class _MySignInPageState extends ConsumerState<MySignInPage> {
         ),
       );
     } else {
+      if (!context.mounted) return;
+
       showDialog(
         context: context,
         builder: (context) {
