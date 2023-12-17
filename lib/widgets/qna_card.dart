@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nasi_igut_han/components/edit_qna_form.dart';
 import 'package:nasi_igut_han/models/qna.dart';
 import 'package:nasi_igut_han/providers/qnas_provider.dart';
 
@@ -103,7 +104,12 @@ class MyQnACard extends ConsumerWidget {
               alignment: Alignment.topRight,
               child: PopupMenuButton(
                 onSelected: (value) {
-                  if (value == 2) {
+                  if (value == 1) {
+                    showDialog(
+                      context: context,
+                      builder: (_) => MyEditQNAForm(qna: qna),
+                    );
+                  } else if (value == 2) {
                     ref.read(qnasProvider.notifier).deleteOne(qna);
                   }
                 },
