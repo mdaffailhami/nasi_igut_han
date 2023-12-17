@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nasi_igut_han/models/qna.dart';
 import 'package:nasi_igut_han/widgets/qna_card.dart';
 
 class MyFAQ extends StatelessWidget {
@@ -20,27 +21,40 @@ class MyFAQ extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text('FAQ',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineLarge
-                  ?.copyWith(color: Colors.white)),
+          Text(
+            'FAQ',
+            style: Theme.of(context)
+                .textTheme
+                .headlineLarge
+                ?.copyWith(color: Colors.white),
+          ),
           const Divider(),
-          const Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 20,
-            runSpacing: 12,
-            children: [
-              MyQnACard(
-                question: 'Sejak kapan mulai belajar pemrograman?',
-                answer: '12 September 2020, kelas 11 MA, & umur 16 tahun',
-              ),
-              MyQnACard(
-                question:
-                    'Sarannya dong channel YouTube buat belajar pemrograman yang mudah dipahami?',
-                answer: 'Web Programming UNPAS dan Kelas Terbuka',
-              ),
-            ],
+          FutureBuilder<List<QNA>>(
+            future: QNA.find(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final cards = snapshot.data?.map((qna) {
+                  return MyQnACard(question: qna.question, answer: qna.answer);
+                });
+
+                return Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 20,
+                  runSpacing: 12,
+                  children: cards!.toList(),
+                );
+              } else if (snapshot.hasError) {
+                debugPrint(snapshot.error.toString());
+                return Center(
+                  child: Text(
+                    'Gagal memuat data!',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            },
           ),
         ],
       ),
