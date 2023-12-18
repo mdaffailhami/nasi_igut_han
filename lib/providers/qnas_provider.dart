@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nasi_igut_han/models/admin.dart';
 import 'package:nasi_igut_han/models/qna.dart';
 
 class QNASNotifier extends StateNotifier<List<QNA>> {

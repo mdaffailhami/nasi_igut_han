@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nasi_igut_han/pages/home_page.dart';
 import 'package:nasi_igut_han/pages/sign_in_page.dart';
 
 void main() {

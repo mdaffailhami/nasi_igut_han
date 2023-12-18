@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nasi_igut_han/models/product.dart';
-import 'package:nasi_igut_han/widgets/socmed_icon_button.dart';
 
 class MyProductCard extends StatelessWidget {
   const MyProductCard({
     super.key,
     required this.product,
+    this.showMenuButton = false,
   });
 
   final Product product;
+  final bool showMenuButton;
 
   void onProductDetailButtonPressed(context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          contentPadding: EdgeInsets.all(5),
+          contentPadding: const EdgeInsets.all(5),
           content: SizedBox(
             width: 260,
             height: 360,
@@ -91,6 +92,14 @@ class MyProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final title = SelectableText(
+      product.name,
+      style: Theme.of(context)
+          .textTheme
+          .titleLarge
+          ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
+    );
+
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
@@ -127,13 +136,36 @@ class MyProductCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SelectableText(
-                    product.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
+                  !showMenuButton
+                      ? title
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            title,
+                            PopupMenuButton(
+                              tooltip: 'Buka menu',
+                              onSelected: (value) {
+                                // if (value == 1) {
+                                //   showDialog(
+                                //     context: context,
+                                //     builder: (_) => MyEditQNAForm(qna: qna),
+                                //   );
+                                // } else if (value == 2) {
+                                //   showDialog(
+                                //     context: context,
+                                //     builder: (_) => MyDeleteQNADialog(qna: qna),
+                                //   );
+                                // }
+                              },
+                              itemBuilder: (context) {
+                                return const [
+                                  PopupMenuItem(value: 1, child: Text('Edit')),
+                                  PopupMenuItem(value: 2, child: Text('Hapus')),
+                                ];
+                              },
+                            ),
+                          ],
+                        ),
                   const SizedBox(height: 6),
                   Text(
                     product.description,
