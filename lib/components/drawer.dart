@@ -3,12 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/components/about_us.dart';
 import 'package:nasi_igut_han/components/contact_us_form.dart';
 import 'package:nasi_igut_han/components/faq.dart';
+import 'package:nasi_igut_han/components/products.dart';
 import 'package:nasi_igut_han/components/sign_out_dialog.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
 import 'package:nasi_igut_han/widgets/navigation_button.dart';
 
 class MyDrawer extends ConsumerWidget {
   const MyDrawer({Key? key}) : super(key: key);
+
+  Widget navTile(
+    BuildContext context, {
+    required String text,
+    required GlobalKey componentKey,
+  }) {
+    return SizedBox(
+      height: 55,
+      child: MyNavigationButton(
+        componentKey: componentKey,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,31 +56,20 @@ class MyDrawer extends ConsumerWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 55,
-                    child: MyNavigationButton(
-                      componentKey: MyAboutUs.componentKey,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Tentang Kami',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                      ),
-                    ),
+                  navTile(
+                    context,
+                    text: 'Tentang Kami',
+                    componentKey: MyAboutUs.componentKey,
                   ),
-                  SizedBox(
-                    height: 55,
-                    child: MyNavigationButton(
-                      componentKey: MyFAQ.componentKey,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'FAQ',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                      ),
-                    ),
+                  navTile(
+                    context,
+                    text: 'FAQ',
+                    componentKey: MyFAQ.componentKey,
+                  ),
+                  navTile(
+                    context,
+                    text: 'Produk Kami',
+                    componentKey: MyProducts.componentKey,
                   ),
                   const Divider(),
                   Padding(
@@ -79,10 +89,6 @@ class MyDrawer extends ConsumerWidget {
                               Navigator.of(context).pop();
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                          ),
                           child: Text(
                             'Kontak Kami',
                             style: Theme.of(context)

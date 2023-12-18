@@ -43,21 +43,22 @@ class MyFAQ extends ConsumerWidget {
                     children: [
                       title,
                       Positioned.fill(
-                          child: Align(
-                        alignment: Alignment.centerRight,
-                        child: FilledButton.icon(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const MyAddQNAForm();
-                              },
-                            );
-                          },
-                          icon: const Icon(Icons.add),
-                          label: const Text('Tambah QNA'),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: FilledButton.icon(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const MyAddQNAForm();
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.add),
+                            label: const Text('Tambah QNA'),
+                          ),
                         ),
-                      ))
+                      )
                     ],
                   ),
                 ),
@@ -90,7 +91,10 @@ class MyFAQ extends ConsumerWidget {
                 return Center(
                   child: Text(
                     'Gagal memuat data!',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(color: Colors.white),
                   ),
                 );
               } else {

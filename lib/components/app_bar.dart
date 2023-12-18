@@ -92,6 +92,12 @@ class MyAppBar extends ConsumerWidget {
                       ),
                     ),
                     MyNavigationButton(
+                      componentKey: MyFAQ.componentKey,
+                      child: Text('FAQ',
+                          style: TextStyle(
+                              color: isShrink ? Colors.black : Colors.white)),
+                    ),
+                    MyNavigationButton(
                       componentKey: MyProducts.componentKey,
                       child: Text(
                         'Produk Kami',
@@ -99,17 +105,11 @@ class MyAppBar extends ConsumerWidget {
                             color: isShrink ? Colors.black : Colors.white),
                       ),
                     ),
-                    MyNavigationButton(
-                      componentKey: MyFAQ.componentKey,
-                      child: Text('FAQ',
-                          style: TextStyle(
-                              color: isShrink ? Colors.black : Colors.white)),
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: ElevatedButton(
+                        child: FilledButton(
                           onPressed: () {
                             Scrollable.ensureVisible(
                               MyContactUsForm.componentKey.currentContext ??
@@ -121,10 +121,6 @@ class MyAppBar extends ConsumerWidget {
                               Navigator.of(context).pop();
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                          ),
                           child: Text(
                             'Kontak Kami',
                             style: Theme.of(context)
