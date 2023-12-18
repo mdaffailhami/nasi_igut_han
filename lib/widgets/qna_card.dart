@@ -3,17 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/components/delete_qna_dialog.dart';
 import 'package:nasi_igut_han/components/edit_qna_form.dart';
 import 'package:nasi_igut_han/models/qna.dart';
-import 'package:nasi_igut_han/providers/qnas_provider.dart';
 
 class MyQnACard extends ConsumerWidget {
   const MyQnACard({
     Key? key,
     required this.qna,
-    this.showEditAndDeleteButton = false,
+    this.showMenuButton = false,
   }) : super(key: key);
 
   final QNA qna;
-  final bool showEditAndDeleteButton;
+  final bool showMenuButton;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -24,7 +23,9 @@ class MyQnACard extends ConsumerWidget {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: !showMenuButton
+            ? const EdgeInsets.all(10)
+            : const EdgeInsets.fromLTRB(10, 10, 32, 10),
         child: Column(
           children: [
             IntrinsicHeight(
@@ -94,7 +95,7 @@ class MyQnACard extends ConsumerWidget {
       ),
     );
 
-    if (!showEditAndDeleteButton) {
+    if (!showMenuButton) {
       return card;
     } else {
       return Stack(

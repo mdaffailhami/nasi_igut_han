@@ -74,7 +74,7 @@ class MyFAQ extends ConsumerWidget {
                     final cards = (qnas as List).map((qna) {
                       return MyQnACard(
                         qna: qna,
-                        showEditAndDeleteButton: admin != null,
+                        showMenuButton: admin != null,
                       );
                     });
 
