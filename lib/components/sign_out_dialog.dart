@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
 
 class MySignOutDialog extends ConsumerWidget {
-  const MySignOutDialog({super.key});
+  const MySignOutDialog({super.key, this.closeDrawer = false});
+
+  final bool closeDrawer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,8 +20,10 @@ class MySignOutDialog extends ConsumerWidget {
         TextButton(
           onPressed: () {
             ref.read(adminProvider.notifier).signOut();
+
             Navigator.pop(context);
-            Navigator.pop(context);
+            if (closeDrawer) Navigator.pop(context);
+
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(seconds: 3),

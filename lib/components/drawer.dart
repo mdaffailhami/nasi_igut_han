@@ -132,7 +132,8 @@ class MyDrawer extends ConsumerWidget {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (_) => const MySignOutDialog(),
+                        builder: (_) =>
+                            const MySignOutDialog(closeDrawer: true),
                       );
                     },
                     icon: const Icon(
