@@ -22,6 +22,8 @@ class AdminNotifier extends StateNotifier<Admin?> {
     return true;
   }
 
+  void signOut() => state = null;
+
   Future<Admin?> findByEmail(String email) async {
     final req = await HttpClient().postUrl(Uri.parse(
       'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/findOne',

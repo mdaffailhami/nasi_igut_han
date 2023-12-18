@@ -19,12 +19,12 @@ class MyAboutUs extends StatelessWidget {
     MySocmedIconButton(
       icon: FaIcon(FontAwesomeIcons.instagram),
       tooltip: 'Instagram',
-      url: 'https://www.instagram.com/m.daffailhami/',
+      url: 'https://www.instagram.com/nasi_igut_han/',
     ),
     MySocmedIconButton(
       icon: FaIcon(FontAwesomeIcons.tiktok),
       tooltip: 'TikTok',
-      url: 'https://tiktok.com',
+      url: 'https://www.tiktok.com/@nasiiguthan',
     ),
   ];
 

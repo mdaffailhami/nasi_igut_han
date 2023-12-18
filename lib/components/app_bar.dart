@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/components/about_us.dart';
 import 'package:nasi_igut_han/components/banner.dart';
 import 'package:nasi_igut_han/components/contact_us_form.dart';
 import 'package:nasi_igut_han/components/faq.dart';
 import 'package:nasi_igut_han/components/products.dart';
+import 'package:nasi_igut_han/components/sign_out_dialog.dart';
 import 'package:nasi_igut_han/other/responsive_builder.dart';
+import 'package:nasi_igut_han/providers/admin_provider.dart';
 import 'package:nasi_igut_han/widgets/navigation_button.dart';
 
-class MyAppBar extends StatelessWidget {
+class MyAppBar extends ConsumerWidget {
   const MyAppBar({super.key, required this.isShrink});
 
   final bool isShrink;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final admin = ref.watch(adminProvider);
+
     return SliverAppBar(
       automaticallyImplyLeading: false,
       pinned: true,
@@ -54,7 +59,7 @@ class MyAppBar extends StatelessWidget {
             ],
           );
         } else {
-          return Row(
+          final appBar = Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               MyNavigationButton(
@@ -135,6 +140,34 @@ class MyAppBar extends StatelessWidget {
               )
             ],
           );
+
+          if (admin == null) {
+            return appBar;
+          } else {
+            return Stack(
+              children: [
+                appBar,
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      tooltip: 'Keluar',
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => const MySignOutDialog(),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.logout,
+                        color: isShrink ? Colors.black : Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
         }
       }),
     );
