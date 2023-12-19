@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/models/admin.dart';
@@ -25,26 +25,16 @@ class AdminNotifier extends StateNotifier<Admin?> {
   void signOut() => state = null;
 
   Future<Admin?> findByEmail(String email) async {
-    final req = await HttpClient().postUrl(Uri.parse(
-      'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/findOne',
-    ));
+    final res = await http.get(
+      Uri.parse(
+        '${const String.fromEnvironment('API_URL')}/admins?email=$email',
+      ),
+      headers: {'Content-Type': 'application/json'},
+    );
 
-    req.headers.add('apiKey', const String.fromEnvironment('api_key'));
-    req.headers.add('Content-Type', 'application/ejson');
-    req.headers.add('Accept', 'application/json');
+    final resBody = jsonDecode(res.body);
 
-    req.write(jsonEncode({
-      'dataSource': 'Cluster',
-      'database': 'nasiIgutHanDB',
-      'collection': 'admins',
-      'filter': {'email': email},
-    }));
-
-    final res = await req.close();
-    final data = await res.transform(utf8.decoder).join();
-    final doc = jsonDecode(data)['document'];
-
-    return doc == null ? null : Admin.fromMap(doc);
+    return resBody['status'] ? Admin.fromMap(resBody['doc']) : null;
   }
 
   Future<bool> insertOne(Admin admin) async {
@@ -53,26 +43,15 @@ class AdminNotifier extends StateNotifier<Admin?> {
       password: sha1.convert(utf8.encode(admin.password)).toString(),
     );
 
-    final HttpClientRequest req = await HttpClient().postUrl(Uri.parse(
-      'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/insertOne',
-    ));
+    final res = await http.post(
+      Uri.parse(
+        '${const String.fromEnvironment('API_URL')}/admins',
+      ),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(hashedDoc.toMap()),
+    );
 
-    req.headers.add('content-Type', 'application/ejson');
-    req.headers.add('Accept', 'application/json');
-    req.headers.add('apiKey', const String.fromEnvironment('api_key'));
-
-    req.write(jsonEncode({
-      'dataSource': 'Cluster',
-      'database': 'nasiIgutHanDB',
-      'collection': 'admins',
-      'document': hashedDoc.toMap(),
-    }));
-
-    final res = await req.close();
-    final data = await res.transform(utf8.decoder).join();
-
-    // Jika data berhasil ditambahkan
-    return jsonDecode(data)['error'] == null ? true : false;
+    return jsonDecode(res.body)['status'];
   }
 }
 

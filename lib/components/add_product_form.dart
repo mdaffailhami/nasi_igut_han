@@ -74,7 +74,7 @@ class _MyAddProductFormState extends ConsumerState<MyAddProductForm> {
 
                 _pickedImage == null
                     ? Image.asset(
-                        'assets/profile.png',
+                        'assets/select_image.jpeg',
                         width: imageSize.width,
                         height: imageSize.height,
                         fit: BoxFit.cover,

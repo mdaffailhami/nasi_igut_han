@@ -53,6 +53,9 @@ class _MySignInPageState extends ConsumerState<MySignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref
+        .read(adminProvider.notifier)
+        .insertOne(Admin(email: 'ngetes@gmail.com', password: '12345'));
     return Scaffold(
       body: Center(
         child: SizedBox(
