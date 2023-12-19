@@ -9,7 +9,7 @@ class QNA {
 
   factory QNA.fromMap(Map map) {
     return QNA(
-      id: map['id'],
+      id: map['_id']['\$oid'],
       question: map['question'],
       answer: map['answer'],
     );
@@ -21,6 +21,7 @@ class QNA {
 
   Map<String, dynamic> toMap() {
     return {
+      '_id': {'\$oid': id},
       'question': question,
       'answer': answer,
     };

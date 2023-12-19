@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/models/qna.dart';
 
@@ -12,124 +12,197 @@ class QNASNotifier extends StateNotifier<List<QNA>> {
   }
 
   Future<void> load() async {
-    final HttpClientRequest req = await HttpClient().postUrl(Uri.parse(
-      'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/find',
-    ));
+    final res = await http.get(
+      Uri.parse(
+        '${const String.fromEnvironment('API_URL')}/qnas',
+      ),
+      headers: {'Content-Type': 'application/json'},
+    );
 
-    req.headers.add('content-Type', 'application/ejson');
-    req.headers.add('Accept', 'application/json');
-    req.headers.add('apiKey', const String.fromEnvironment('api_key'));
+    final docs = jsonDecode(res.body)['docs'];
 
-    req.write(jsonEncode({
-      'dataSource': 'Cluster',
-      'database': 'nasiIgutHanDB',
-      'collection': 'qnas',
-    }));
-
-    final res = await req.close();
-    final data = await res.transform(utf8.decoder).join();
-
-    final qnas = (jsonDecode(data)['documents'] as List).map((doc) {
+    final qnas = (docs as List).map((doc) {
       return QNA.fromMap(doc);
     }).toList();
 
     state = qnas;
+
+    // final HttpClientRequest req = await HttpClient().postUrl(Uri.parse(
+    //   'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/find',
+    // ));
+
+    // req.headers.add('content-Type', 'application/ejson');
+    // req.headers.add('Accept', 'application/json');
+    // req.headers.add('apiKey', const String.fromEnvironment('api_key'));
+
+    // req.write(jsonEncode({
+    //   'dataSource': 'Cluster',
+    //   'database': 'nasiIgutHanDB',
+    //   'collection': 'qnas',
+    // }));
+
+    // final res = await req.close();
+    // final data = await res.transform(utf8.decoder).join();
+
+    // final qnas = (jsonDecode(data)['documents'] as List).map((doc) {
+    //   return QNA.fromMap(doc);
+    // }).toList();
+
+    // state = qnas;
   }
 
   Future<bool> insertOne(QNA qna) async {
-    final HttpClientRequest req = await HttpClient().postUrl(Uri.parse(
-      'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/insertOne',
-    ));
+    final res = await http.post(
+      Uri.parse(
+        '${const String.fromEnvironment('API_URL')}/qnas',
+      ),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(qna.toMap()),
+    );
 
-    req.headers.add('content-Type', 'application/ejson');
-    req.headers.add('Accept', 'application/json');
-    req.headers.add('apiKey', const String.fromEnvironment('api_key'));
+    final bool status = jsonDecode(res.body)['status'];
 
-    req.write(jsonEncode({
-      'dataSource': 'Cluster',
-      'database': 'nasiIgutHanDB',
-      'collection': 'qnas',
-      'document': qna.toMap(),
-    }));
+    // Jika data gagal ditambahkan
+    if (!status) return false;
 
-    final res = await req.close();
-    final data = await res.transform(utf8.decoder).join();
+    final newState = [...state];
+    newState.add(qna);
 
-    // Jika data berhasil ditambahkan
-    if (jsonDecode(data)['error'] == null) {
-      final newState = [...state];
-      newState.add(qna);
+    state = newState;
+    return true;
 
-      state = newState;
-      return true;
-    }
+    // final HttpClientRequest req = await HttpClient().postUrl(Uri.parse(
+    //   'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/insertOne',
+    // ));
 
-    return false;
+    // req.headers.add('content-Type', 'application/ejson');
+    // req.headers.add('Accept', 'application/json');
+    // req.headers.add('apiKey', const String.fromEnvironment('api_key'));
+
+    // req.write(jsonEncode({
+    //   'dataSource': 'Cluster',
+    //   'database': 'nasiIgutHanDB',
+    //   'collection': 'qnas',
+    //   'document': qna.toMap(),
+    // }));
+
+    // final res = await req.close();
+    // final data = await res.transform(utf8.decoder).join();
+
+    // // Jika data berhasil ditambahkan
+    // if (jsonDecode(data)['error'] == null) {
+    //   final newState = [...state];
+    //   newState.add(qna);
+
+    //   state = newState;
+    //   return true;
+    // }
+
+    // return false;
   }
 
   Future<bool> deleteOne(QNA qna) async {
-    final HttpClientRequest req = await HttpClient().postUrl(Uri.parse(
-      'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/deleteOne',
-    ));
+    final res = await http.delete(
+      Uri.parse(
+        '${const String.fromEnvironment('API_URL')}/qnas?id=${qna.id}',
+      ),
+      headers: {'Content-Type': 'application/json'},
+    );
 
-    req.headers.add('content-Type', 'application/ejson');
-    req.headers.add('Accept', 'application/json');
-    req.headers.add('apiKey', const String.fromEnvironment('api_key'));
+    final bool status = jsonDecode(res.body)['status'];
 
-    req.write(jsonEncode({
-      'dataSource': 'Cluster',
-      'database': 'nasiIgutHanDB',
-      'collection': 'qnas',
-      'filter': qna.toMap(),
-    }));
+    // Jika data gagal dihapus
+    if (!status) return false;
 
-    final res = await req.close();
-    final data = await res.transform(utf8.decoder).join();
+    final newState = [...state];
+    newState.remove(qna);
 
-    // Jika data berhasil dihapus
-    if (jsonDecode(data)['error'] == null) {
-      final newState = [...state];
-      newState.remove(qna);
+    state = newState;
+    return true;
 
-      state = newState;
-      return true;
-    }
+    // final HttpClientRequest req = await HttpClient().postUrl(Uri.parse(
+    //   'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/deleteOne',
+    // ));
 
-    return false;
+    // req.headers.add('content-Type', 'application/ejson');
+    // req.headers.add('Accept', 'application/json');
+    // req.headers.add('apiKey', const String.fromEnvironment('api_key'));
+
+    // req.write(jsonEncode({
+    //   'dataSource': 'Cluster',
+    //   'database': 'nasiIgutHanDB',
+    //   'collection': 'qnas',
+    //   'filter': qna.toMap(),
+    // }));
+
+    // final res = await req.close();
+    // final data = await res.transform(utf8.decoder).join();
+
+    // // Jika data berhasil dihapus
+    // if (jsonDecode(data)['error'] == null) {
+    //   final newState = [...state];
+    //   newState.remove(qna);
+
+    //   state = newState;
+    //   return true;
+    // }
+
+    // return false;
   }
 
   Future<bool> replaceOne(QNA qna, QNA newQNA) async {
-    final HttpClientRequest req = await HttpClient().postUrl(Uri.parse(
-      'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/replaceOne',
-    ));
+    final res = await http.put(
+      Uri.parse(
+        '${const String.fromEnvironment('API_URL')}/qnas?id=${qna.id}',
+      ),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(newQNA.toMap()),
+    );
 
-    req.headers.add('content-Type', 'application/ejson');
-    req.headers.add('Accept', 'application/json');
-    req.headers.add('apiKey', const String.fromEnvironment('api_key'));
+    final bool status = jsonDecode(res.body)['status'];
 
-    req.write(jsonEncode({
-      'dataSource': 'Cluster',
-      'database': 'nasiIgutHanDB',
-      'collection': 'qnas',
-      'filter': qna.toMap(),
-      'replacement': newQNA.toMap(),
-    }));
+    // Jika data gagal direplace
+    if (!status) return false;
 
-    final res = await req.close();
-    final data = await res.transform(utf8.decoder).join();
+    final newState = [...state];
 
-    // Jika data berhasil direplace
-    if (jsonDecode(data)['error'] == null) {
-      final newState = [...state];
+    final index = newState.indexWhere((element) => element == qna);
+    newState[index] = newQNA;
 
-      final index = newState.indexWhere((element) => element == qna);
-      newState[index] = newQNA;
+    state = newState;
+    return true;
 
-      state = newState;
-      return true;
-    }
+    // final HttpClientRequest req = await HttpClient().postUrl(Uri.parse(
+    //   'https://ap-southeast-1.aws.data.mongodb-api.com/app/data-vpphc/endpoint/data/v1/action/replaceOne',
+    // ));
 
-    return false;
+    // req.headers.add('content-Type', 'application/ejson');
+    // req.headers.add('Accept', 'application/json');
+    // req.headers.add('apiKey', const String.fromEnvironment('api_key'));
+
+    // req.write(jsonEncode({
+    //   'dataSource': 'Cluster',
+    //   'database': 'nasiIgutHanDB',
+    //   'collection': 'qnas',
+    //   'filter': qna.toMap(),
+    //   'replacement': newQNA.toMap(),
+    // }));
+
+    // final res = await req.close();
+    // final data = await res.transform(utf8.decoder).join();
+
+    // // Jika data berhasil direplace
+    // if (jsonDecode(data)['error'] == null) {
+    //   final newState = [...state];
+
+    //   final index = newState.indexWhere((element) => element == qna);
+    //   newState[index] = newQNA;
+
+    //   state = newState;
+    //   return true;
+    // }
+
+    // return false;
   }
 }
 
