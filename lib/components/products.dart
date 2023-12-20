@@ -4,6 +4,7 @@ import 'package:nasi_igut_han/components/add_product_form.dart';
 import 'package:nasi_igut_han/models/product.dart';
 import 'package:nasi_igut_han/models/rupiah.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
+import 'package:nasi_igut_han/providers/products_provider.dart';
 import 'package:nasi_igut_han/widgets/product_card.dart';
 
 class MyProducts extends ConsumerWidget {
@@ -51,52 +52,44 @@ class MyProducts extends ConsumerWidget {
                 ),
               ),
         const Divider(),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 14,
-          runSpacing: 14,
-          children: [
-            MyProductCard(
-              showMenuButton: admin != null,
-              product: Product(
-                name: 'Akane Kurokawa',
-                description: 'Dijual waifu tercantik & terjenius di dunia',
-                imageUrl:
-                    'https://i.pinimg.com/736x/27/fd/71/27fd71e5108c40a02034cf15daf76c58.jpg',
-                price: Rupiah(10000),
-              ),
-            ),
-            MyProductCard(
-              showMenuButton: admin != null,
-              product: Product(
-                name: 'Akane Kurokawa',
-                description: 'Dijual waifu tercantik & terjenius di dunia',
-                imageUrl:
-                    'https://i.pinimg.com/736x/27/fd/71/27fd71e5108c40a02034cf15daf76c58.jpg',
-                price: Rupiah(10000),
-              ),
-            ),
-            MyProductCard(
-              showMenuButton: admin != null,
-              product: Product(
-                name: 'Akane Kurokawa',
-                description: 'Dijual waifu tercantik & terjenius di dunia',
-                imageUrl:
-                    'https://i.pinimg.com/736x/27/fd/71/27fd71e5108c40a02034cf15daf76c58.jpg',
-                price: Rupiah(10000),
-              ),
-            ),
-            MyProductCard(
-              showMenuButton: admin != null,
-              product: Product(
-                name: 'Akane Kurokawa',
-                description: 'Dijual waifu tercantik & terjenius di dunia',
-                imageUrl:
-                    'https://i.pinimg.com/736x/27/fd/71/27fd71e5108c40a02034cf15daf76c58.jpg',
-                price: Rupiah(10000),
-              ),
-            ),
-          ],
+        FutureBuilder(
+          future: ref.read(productsProvider.notifier).load(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Consumer(
+                builder: (context, ref, child) {
+                  final products = ref.watch(productsProvider);
+
+                  final cards = (products as List).map((product) {
+                    return MyProductCard(
+                      product: product,
+                      showMenuButton: admin != null,
+                    );
+                  });
+
+                  return Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 14,
+                    runSpacing: 14,
+                    children: cards.toList(),
+                  );
+                },
+              );
+            } else if (snapshot.hasError) {
+              debugPrint(snapshot.error.toString());
+              return Center(
+                child: Text(
+                  'Gagal memuat data!',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(color: Colors.white),
+                ),
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
         ),
       ],
     );

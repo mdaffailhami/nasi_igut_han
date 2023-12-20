@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class Rupiah {
   Rupiah(this.nilai);
 
-  num nilai;
+  int nilai;
 
   @override
   String toString() {

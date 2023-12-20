@@ -9,19 +9,29 @@ import 'package:nasi_igut_han/models/rupiah.dart';
 import 'package:nasi_igut_han/providers/products_provider.dart';
 import 'package:nasi_igut_han/widgets/text_form_field.dart';
 
-class MyAddProductForm extends ConsumerStatefulWidget {
-  const MyAddProductForm({super.key});
+class MyEditProductForm extends ConsumerStatefulWidget {
+  const MyEditProductForm({super.key, required this.product});
+
+  final Product product;
 
   @override
-  ConsumerState<MyAddProductForm> createState() => _MyAddProductFormState();
+  ConsumerState<MyEditProductForm> createState() => _MyEditProductFormState();
 }
 
-class _MyAddProductFormState extends ConsumerState<MyAddProductForm> {
+class _MyEditProductFormState extends ConsumerState<MyEditProductForm> {
   final _pickedImage = ValueNotifier<String?>(null);
   final _pricePreview = ValueNotifier<String>('');
 
   final _product =
       Product(name: '', description: '', price: Rupiah(0), image: '');
+
+  Future<void> onFormSubmitted() async {
+    final success = await ref
+        .read(productsProvider.notifier)
+        .replaceOne(widget.product, _product);
+
+    if (success && context.mounted) Navigator.pop(context);
+  }
 
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -34,19 +44,21 @@ class _MyAddProductFormState extends ConsumerState<MyAddProductForm> {
     _product.image = newImage;
   }
 
-  Future<void> onFormSubmitted() async {
-    final success =
-        await ref.read(productsProvider.notifier).insertOne(_product);
-
-    if (success && context.mounted) Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
+    _product.id = widget.product.id;
+    _product.name = widget.product.name;
+    _product.description = widget.product.description;
+    _product.price = widget.product.price;
+    _product.image = widget.product.image;
+
+    _pricePreview.value = '(${widget.product.price})';
+    _pickedImage.value = widget.product.image;
+
     const Size imageSize = Size(140, 140);
 
     return AlertDialog(
-      title: const SelectableText('Tambah Produk'),
+      title: const SelectableText('Edit Product'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -94,12 +106,14 @@ class _MyAddProductFormState extends ConsumerState<MyAddProductForm> {
             labelText: 'Nama',
             onChanged: (String value) => _product.name = value,
             onFieldSubmitted: (_) => onFormSubmitted(),
+            initialValue: widget.product.name,
           ),
           const SizedBox(height: 15),
           MyTextFormField(
             labelText: 'Description',
             onChanged: (String value) => _product.description = value,
             onFieldSubmitted: (_) => onFormSubmitted(),
+            initialValue: widget.product.description,
           ),
           const SizedBox(height: 15),
           ValueListenableBuilder(
@@ -115,6 +129,7 @@ class _MyAddProductFormState extends ConsumerState<MyAddProductForm> {
                   _pricePreview.value = '(${_product.price})';
                 },
                 onFieldSubmitted: (_) => onFormSubmitted(),
+                initialValue: widget.product.price.nilai.toString(),
               );
             },
           ),
@@ -127,7 +142,7 @@ class _MyAddProductFormState extends ConsumerState<MyAddProductForm> {
         ),
         TextButton(
           onPressed: () => onFormSubmitted(),
-          child: const Text('Tambah'),
+          child: const Text('Simpan'),
         ),
       ],
     );

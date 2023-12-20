@@ -7,10 +7,6 @@ import 'package:nasi_igut_han/models/qna.dart';
 class QNASNotifier extends StateNotifier<List<QNA>> {
   QNASNotifier() : super([]);
 
-  void set(List<QNA> qnas) {
-    state = qnas;
-  }
-
   Future<void> load() async {
     final res = await http.get(
       Uri.parse(

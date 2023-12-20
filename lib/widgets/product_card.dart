@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nasi_igut_han/components/delete_product_dialog.dart';
+import 'package:nasi_igut_han/components/edit_product_form.dart';
 import 'package:nasi_igut_han/models/product.dart';
 
 class MyProductCard extends StatelessWidget {
@@ -30,8 +34,8 @@ class MyProductCard extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(16)),
-                      child: Image.network(
-                        product.imageUrl,
+                      child: Image.memory(
+                        base64Decode(product.image),
                         fit: BoxFit.cover,
                         width: double.infinity,
                       ),
@@ -123,8 +127,8 @@ class MyProductCard extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(16)),
-                  child: Image.network(
-                    product.imageUrl,
+                  child: Image.memory(
+                    base64Decode(product.image),
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
@@ -145,17 +149,19 @@ class MyProductCard extends StatelessWidget {
                             PopupMenuButton(
                               tooltip: 'Buka menu',
                               onSelected: (value) {
-                                // if (value == 1) {
-                                //   showDialog(
-                                //     context: context,
-                                //     builder: (_) => MyEditQNAForm(qna: qna),
-                                //   );
-                                // } else if (value == 2) {
-                                //   showDialog(
-                                //     context: context,
-                                //     builder: (_) => MyDeleteQNADialog(qna: qna),
-                                //   );
-                                // }
+                                if (value == 1) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) =>
+                                        MyEditProductForm(product: product),
+                                  );
+                                } else if (value == 2) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) =>
+                                        MyDeleteProductDialog(product: product),
+                                  );
+                                }
                               },
                               itemBuilder: (context) {
                                 return const [
@@ -190,7 +196,7 @@ class MyProductCard extends StatelessWidget {
                     width: double.infinity,
                     child: FilledButton(
                       onPressed: () => onProductDetailButtonPressed(context),
-                      child: Text('Detail Produk'),
+                      child: const Text('Detail Produk'),
                     ),
                   ),
                 ],
