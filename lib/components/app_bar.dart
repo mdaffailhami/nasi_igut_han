@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nasi_igut_han/components/about_us.dart';
 import 'package:nasi_igut_han/components/banner.dart';
 import 'package:nasi_igut_han/components/contact_us_form.dart';
 import 'package:nasi_igut_han/components/faq.dart';
 import 'package:nasi_igut_han/components/products.dart';
 import 'package:nasi_igut_han/components/settings_form.dart';
 import 'package:nasi_igut_han/components/sign_out_dialog.dart';
+import 'package:nasi_igut_han/models/settings.dart';
 import 'package:nasi_igut_han/other/responsive_builder.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
+import 'package:nasi_igut_han/providers/settings_provider.dart';
 import 'package:nasi_igut_han/widgets/navigation_button.dart';
 
 class MyAppBar extends ConsumerWidget {
@@ -19,6 +22,7 @@ class MyAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final admin = ref.watch(adminProvider);
+    final settings = ref.watch(settingsProvider) as Settings;
 
     return SliverAppBar(
       automaticallyImplyLeading: false,
@@ -97,10 +101,11 @@ class MyAppBar extends ConsumerWidget {
                 MyNavigationButton(
                   componentKey: MyBanner.componentKey,
                   child: isShrink
-                      ? const CircleAvatar(
+                      ? CircleAvatar(
                           radius: 19,
                           backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage('assets/profile.png'),
+                          backgroundImage:
+                              MemoryImage(base64Decode(settings.logo)),
                         )
                       : Text(
                           'NIH',

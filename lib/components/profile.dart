@@ -11,7 +11,6 @@ class MyProfile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider) as Settings;
-    print('rebuild');
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
