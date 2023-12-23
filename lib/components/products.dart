@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/components/add_product_form.dart';
 import 'package:nasi_igut_han/models/product.dart';
 import 'package:nasi_igut_han/models/rupiah.dart';
+import 'package:nasi_igut_han/other/responsive_builder.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
 import 'package:nasi_igut_han/providers/products_provider.dart';
 import 'package:nasi_igut_han/widgets/product_card.dart';
@@ -14,6 +15,15 @@ class MyProducts extends ConsumerWidget {
 
   @override
   Key? get key => componentKey;
+
+  void onAddButtonPressed(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const MyAddProductForm();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,17 +44,27 @@ class MyProducts extends ConsumerWidget {
                     Positioned.fill(
                       child: Align(
                         alignment: Alignment.centerRight,
-                        child: FilledButton.icon(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const MyAddProductForm();
-                              },
-                            );
+                        child: MyResponsiveBuilder(
+                          (context, isSmall, isMedium, isLarge) {
+                            if (isSmall) {
+                              return FloatingActionButton(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                onPressed: () => onAddButtonPressed(context),
+                                child: Icon(
+                                  Icons.add,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                              );
+                            } else {
+                              return FilledButton.icon(
+                                onPressed: () => onAddButtonPressed(context),
+                                icon: const Icon(Icons.add),
+                                label: const Text('Tambah Produk'),
+                              );
+                            }
                           },
-                          icon: const Icon(Icons.add),
-                          label: const Text('Tambah Produk'),
                         ),
                       ),
                     )

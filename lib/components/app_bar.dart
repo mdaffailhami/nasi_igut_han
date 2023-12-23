@@ -27,20 +27,74 @@ class MyAppBar extends ConsumerWidget {
       flexibleSpace: const FlexibleSpaceBar(
         background: MyBanner(),
       ),
-      title: MyResponsiveBuilder((_, isSmall, isMedium, isLarge) {
-        if (isSmall) {
-          return Stack(
-            alignment: AlignmentDirectional.centerStart,
-            children: [
+      actions: admin == null
+          ? null
+          : [
               IconButton(
+                tooltip: 'Setelan',
                 onPressed: () {
-                  Scaffold.of(context).openDrawer();
+                  showDialog(
+                    context: context,
+                    builder: (context) => const MySettingsForm(),
+                  );
                 },
-                icon: Icon(Icons.menu,
-                    color: isShrink ? Colors.black : Colors.white),
+                icon: Icon(
+                  Icons.settings,
+                  color: isShrink ? Colors.black : Colors.white,
+                ),
               ),
-              Center(
-                child: MyNavigationButton(
+              IconButton(
+                tooltip: 'Keluar',
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => const MySignOutDialog(),
+                  );
+                },
+                icon: Icon(
+                  Icons.logout,
+                  color: isShrink ? Colors.black : Colors.white,
+                ),
+              ),
+            ],
+      leading: MyResponsiveBuilder((_, isSmall, isMedium, isLarge) {
+        if (isSmall) {
+          return IconButton(
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            icon:
+                Icon(Icons.menu, color: isShrink ? Colors.black : Colors.white),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      }),
+      centerTitle: true,
+      title: MyResponsiveBuilder(
+        (_, isSmall, isMedium, isLarge) {
+          if (isSmall) {
+            return MyNavigationButton(
+              componentKey: MyBanner.componentKey,
+              child: isShrink
+                  ? const CircleAvatar(
+                      radius: 19,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage('assets/profile.png'),
+                    )
+                  : Text(
+                      'NIH',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(color: Colors.white),
+                    ),
+            );
+          } else {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                MyNavigationButton(
                   componentKey: MyBanner.componentKey,
                   child: isShrink
                       ? const CircleAvatar(
@@ -56,133 +110,59 @@ class MyAppBar extends ConsumerWidget {
                               ?.copyWith(color: Colors.white),
                         ),
                 ),
-              ),
-            ],
-          );
-        } else {
-          final appBar = Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              MyNavigationButton(
-                componentKey: MyBanner.componentKey,
-                child: isShrink
-                    ? const CircleAvatar(
-                        radius: 19,
-                        backgroundColor: Colors.transparent,
-                        backgroundImage: AssetImage('assets/profile.png'),
-                      )
-                    : Text(
-                        'NIH',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(color: Colors.white),
+                SizedBox(
+                  height: kToolbarHeight,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      MyNavigationButton(
+                        componentKey: MyFAQ.componentKey,
+                        child: Text('FAQ',
+                            style: TextStyle(
+                                color: isShrink ? Colors.black : Colors.white)),
                       ),
-              ),
-              SizedBox(
-                height: kToolbarHeight,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => MySettingsForm(),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
+                      MyNavigationButton(
+                        componentKey: MyProducts.componentKey,
                         child: Text(
-                          'Setelan',
+                          'Produk Kami',
                           style: TextStyle(
                               color: isShrink ? Colors.black : Colors.white),
                         ),
                       ),
-                    ),
-                    MyNavigationButton(
-                      componentKey: MyAboutUs.componentKey,
-                      child: Text(
-                        'Tentang Kami',
-                        style: TextStyle(
-                            color: isShrink ? Colors.black : Colors.white),
-                      ),
-                    ),
-                    MyNavigationButton(
-                      componentKey: MyFAQ.componentKey,
-                      child: Text('FAQ',
-                          style: TextStyle(
-                              color: isShrink ? Colors.black : Colors.white)),
-                    ),
-                    MyNavigationButton(
-                      componentKey: MyProducts.componentKey,
-                      child: Text(
-                        'Produk Kami',
-                        style: TextStyle(
-                            color: isShrink ? Colors.black : Colors.white),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: FilledButton(
-                          onPressed: () {
-                            Scrollable.ensureVisible(
-                              MyContactUsForm.componentKey.currentContext ??
-                                  context,
-                              duration: const Duration(milliseconds: 800),
-                            );
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: FilledButton(
+                            onPressed: () {
+                              Scrollable.ensureVisible(
+                                MyContactUsForm.componentKey.currentContext ??
+                                    context,
+                                duration: const Duration(milliseconds: 800),
+                              );
 
-                            if (Scaffold.of(context).isDrawerOpen) {
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          child: Text(
-                            'Kontak Kami',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge
-                                ?.copyWith(color: Colors.white),
+                              if (Scaffold.of(context).isDrawerOpen) {
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            child: Text(
+                              'Kontak Kami',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge
+                                  ?.copyWith(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          );
-
-          if (admin == null) {
-            return appBar;
-          } else {
-            return Stack(
-              children: [
-                appBar,
-                Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      tooltip: 'Keluar',
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) => const MySignOutDialog(),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.logout,
-                        color: isShrink ? Colors.black : Colors.white,
-                      ),
-                    ),
+                    ],
                   ),
-                ),
+                )
               ],
             );
           }
-        }
-      }),
+        },
+      ),
     );
   }
 }

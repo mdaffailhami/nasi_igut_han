@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/components/add_qna_form.dart';
+import 'package:nasi_igut_han/other/responsive_builder.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
 import 'package:nasi_igut_han/providers/qnas_provider.dart';
 import 'package:nasi_igut_han/widgets/qna_card.dart';
@@ -12,6 +13,15 @@ class MyFAQ extends ConsumerWidget {
 
   @override
   Key? get key => componentKey;
+
+  void onAddButtonPressed(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const MyAddQNAForm();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,17 +55,27 @@ class MyFAQ extends ConsumerWidget {
                       Positioned.fill(
                         child: Align(
                           alignment: Alignment.centerRight,
-                          child: FilledButton.icon(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const MyAddQNAForm();
-                                },
-                              );
+                          child: MyResponsiveBuilder(
+                            (context, isSmall, isMedium, isLarge) {
+                              if (isSmall) {
+                                return FloatingActionButton(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  onPressed: () => onAddButtonPressed(context),
+                                  child: Icon(
+                                    Icons.add,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                );
+                              } else {
+                                return FilledButton.icon(
+                                  onPressed: () => onAddButtonPressed(context),
+                                  icon: const Icon(Icons.add),
+                                  label: const Text('Tambah QNA'),
+                                );
+                              }
                             },
-                            icon: const Icon(Icons.add),
-                            label: const Text('Tambah QNA'),
                           ),
                         ),
                       )
