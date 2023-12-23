@@ -139,7 +139,7 @@ class _MySettingsFormState extends ConsumerState<MySettingsForm> {
                 return MyImageFormField(
                   label: 'Background',
                   image: MemoryImage(base64Decode(value)),
-                  onGantiButtonPressed: () => pickImage(PickImage.banner),
+                  onGantiButtonPressed: () => pickImage(PickImage.background),
                 );
               },
             ),
