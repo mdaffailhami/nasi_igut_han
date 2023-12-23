@@ -5,6 +5,7 @@ import 'package:nasi_igut_han/components/banner.dart';
 import 'package:nasi_igut_han/components/contact_us_form.dart';
 import 'package:nasi_igut_han/components/faq.dart';
 import 'package:nasi_igut_han/components/products.dart';
+import 'package:nasi_igut_han/components/settings_form.dart';
 import 'package:nasi_igut_han/components/sign_out_dialog.dart';
 import 'package:nasi_igut_han/other/responsive_builder.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
@@ -83,6 +84,22 @@ class MyAppBar extends ConsumerWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => MySettingsForm(),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          'Setelan',
+                          style: TextStyle(
+                              color: isShrink ? Colors.black : Colors.white),
+                        ),
+                      ),
+                    ),
                     MyNavigationButton(
                       componentKey: MyAboutUs.componentKey,
                       child: Text(

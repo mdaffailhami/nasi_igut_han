@@ -1,7 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:nasi_igut_han/components/profile.dart';
+import 'dart:convert';
 
-class MyBanner extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nasi_igut_han/components/profile.dart';
+import 'package:nasi_igut_han/models/settings.dart';
+import 'package:nasi_igut_han/providers/settings_provider.dart';
+
+class MyBanner extends ConsumerWidget {
   const MyBanner({Key? key}) : super(key: key);
 
   static final GlobalKey componentKey = GlobalKey();
@@ -10,11 +15,13 @@ class MyBanner extends StatelessWidget {
   Key? get key => componentKey;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider) as Settings;
+
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset('assets/banner.jpeg', fit: BoxFit.cover),
+        Image.memory(base64Decode(settings.banner), fit: BoxFit.cover),
         const SizedBox(child: ColoredBox(color: Colors.black54)),
         const Padding(
           padding: EdgeInsets.only(top: 26),

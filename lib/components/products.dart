@@ -87,7 +87,7 @@ class MyProducts extends ConsumerWidget {
                 ),
               );
             } else {
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),

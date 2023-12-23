@@ -28,8 +28,10 @@ class MyTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 45,
+      // height: 45,
+      width: 300,
       child: TextFormField(
+        maxLines: null,
         obscureText: obscureText,
         onChanged: onChanged,
         onFieldSubmitted: onFieldSubmitted,
@@ -41,6 +43,7 @@ class MyTextFormField extends StatelessWidget {
           labelText: labelText,
           suffix: suffix,
           suffixIcon: suffixIcon,
+          isDense: true,
         ),
       ),
     );

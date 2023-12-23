@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nasi_igut_han/models/admin.dart';
+import 'package:nasi_igut_han/pages/home_page.dart';
 import 'package:nasi_igut_han/pages/sign_in_page.dart';
+import 'package:nasi_igut_han/providers/admin_provider.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -19,7 +22,11 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         useMaterial3: true,
       ),
-      home: const MySignInPage(),
+      home: Consumer(builder: (context, ref, child) {
+        ref.read(adminProvider.notifier).signIn(
+            Admin(email: 'ilhamvocalovi@gmail.com', password: '12345678'));
+        return const MyHomePage();
+      }),
     );
   }
 }

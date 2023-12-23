@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nasi_igut_han/models/settings.dart';
+import 'package:nasi_igut_han/providers/settings_provider.dart';
 import 'package:nasi_igut_han/widgets/socmed_icon_button.dart';
 
-class MyAboutUs extends StatelessWidget {
+class MyAboutUs extends ConsumerWidget {
   const MyAboutUs({Key? key}) : super(key: key);
 
   static final GlobalKey componentKey = GlobalKey();
@@ -29,7 +32,9 @@ class MyAboutUs extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider) as Settings;
+
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(10),
@@ -47,29 +52,16 @@ class MyAboutUs extends StatelessWidget {
               width: 400,
               child: Column(
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(fontSize: 15),
-                      children: [
-                        TextSpan(
-                          text: "Lorem ",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                        const TextSpan(
-                          text:
-                              "ipsum dolor sit, amet consectetur adipisicing elit. Unde consequuntur saepe accusantium nam dolorem in, odit placeat sit possimus repudiandae eum porro quibusdam facilis aut ratione accusamus animi ut ipsum!",
-                        ),
-                      ],
-                    ),
+                  SelectableText(
+                    settings.aboutUs,
                     textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall
+                        ?.copyWith(fontSize: 15),
                   ),
                   const SizedBox(height: 20),
-                  Wrap(
+                  const Wrap(
                     alignment: WrapAlignment.center,
                     spacing: 50,
                     runSpacing: 15,

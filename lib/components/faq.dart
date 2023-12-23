@@ -98,7 +98,7 @@ class MyFAQ extends ConsumerWidget {
                   ),
                 );
               } else {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
             },
           ),

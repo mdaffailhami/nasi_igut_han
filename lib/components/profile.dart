@@ -1,22 +1,30 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class MyProfile extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nasi_igut_han/models/settings.dart';
+import 'package:nasi_igut_han/providers/settings_provider.dart';
+
+class MyProfile extends ConsumerWidget {
   const MyProfile({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider) as Settings;
+    print('rebuild');
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 67,
           backgroundColor: Colors.transparent,
-          backgroundImage: AssetImage('assets/profile.png'),
+          backgroundImage: MemoryImage(base64Decode(settings.logo)),
         ),
         const SizedBox(height: 4),
-        const Text(
-          'Nasi Igut Han',
-          style: TextStyle(fontSize: 32, color: Colors.white),
+        Text(
+          settings.title,
+          style: const TextStyle(fontSize: 32, color: Colors.white),
         ),
         // const SizedBox(height: 2),
         // RichText(
