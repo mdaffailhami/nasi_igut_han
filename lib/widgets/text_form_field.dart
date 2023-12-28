@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 class MyTextFormField extends StatelessWidget {
   const MyTextFormField({
     super.key,
+    this.width,
     this.labelText,
     this.obscureText = false,
     this.suffix,
@@ -13,8 +14,10 @@ class MyTextFormField extends StatelessWidget {
     this.initialValue,
     this.keyboardType,
     this.inputFormatter,
+    this.maxLines = 1,
   });
 
+  final double? width;
   final String? labelText;
   final bool obscureText;
   final Widget? suffix;
@@ -24,14 +27,15 @@ class MyTextFormField extends StatelessWidget {
   final String? initialValue;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatter;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       // height: 45,
-      width: 300,
+      width: width ?? 300,
       child: TextFormField(
-        maxLines: null,
+        maxLines: maxLines,
         obscureText: obscureText,
         onChanged: onChanged,
         onFieldSubmitted: onFieldSubmitted,

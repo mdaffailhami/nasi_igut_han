@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:nasi_igut_han/pages/home_page.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -6,23 +8,21 @@ class MySocmedIconButton extends StatelessWidget {
   const MySocmedIconButton({
     Key? key,
     required this.icon,
-    required this.tooltip,
     required this.url,
   }) : super(key: key);
 
-  final Widget icon;
-  final String tooltip;
+  final String icon;
   final String url;
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: icon,
-      tooltip: tooltip,
-      onPressed: () async {
+    return InkWell(
+      onTap: () async {
         if (await canLaunchUrl(Uri.parse(url))) {
           launchUrl(Uri.parse(url));
         } else {
+          if (!context.mounted) return;
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -42,6 +42,11 @@ class MySocmedIconButton extends StatelessWidget {
           );
         }
       },
+      child: Ink.image(
+        width: 25,
+        height: 25,
+        image: MemoryImage(base64Decode(icon)),
+      ),
     );
   }
 }

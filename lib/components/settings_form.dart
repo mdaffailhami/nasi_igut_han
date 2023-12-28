@@ -6,9 +6,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:nasi_igut_han/models/settings.dart';
 import 'package:nasi_igut_han/providers/settings_provider.dart';
 import 'package:nasi_igut_han/widgets/image_form_field.dart';
+import 'package:nasi_igut_han/widgets/socmed_form_field.dart';
 import 'package:nasi_igut_han/widgets/text_form_field.dart';
 
-enum PickImage { logo, banner, background }
+enum PickImage {
+  logo,
+  banner,
+  background,
+  socmed1,
+  socmed2,
+  socmed3,
+}
 
 class MySettingsForm extends ConsumerStatefulWidget {
   const MySettingsForm({super.key});
@@ -24,6 +32,9 @@ class _MySettingsFormState extends ConsumerState<MySettingsForm> {
   final _pickedLogo = ValueNotifier<String>(defaultImage);
   final _pickedBanner = ValueNotifier<String>(defaultImage);
   final _pickedBackground = ValueNotifier<String>(defaultImage);
+  final _pickedSocmed1 = ValueNotifier<String>(defaultImage);
+  final _pickedSocmed2 = ValueNotifier<String>(defaultImage);
+  final _pickedSocmed3 = ValueNotifier<String>(defaultImage);
 
   @override
   void initState() {
@@ -33,6 +44,9 @@ class _MySettingsFormState extends ConsumerState<MySettingsForm> {
     _pickedLogo.value = settings.logo;
     _pickedBanner.value = settings.banner;
     _pickedBackground.value = settings.background;
+    _pickedSocmed1.value = settings.socmed1.icon;
+    _pickedSocmed2.value = settings.socmed2.icon;
+    _pickedSocmed3.value = settings.socmed3.icon;
   }
 
   Future<void> onFormSubmitted() async {
@@ -59,6 +73,18 @@ class _MySettingsFormState extends ConsumerState<MySettingsForm> {
     if (pickImage == PickImage.background) {
       _pickedBackground.value = newImage;
       settings.background = newImage;
+    }
+    if (pickImage == PickImage.socmed1) {
+      _pickedSocmed1.value = newImage;
+      settings.socmed1.icon = newImage;
+    }
+    if (pickImage == PickImage.socmed2) {
+      _pickedSocmed2.value = newImage;
+      settings.socmed2.icon = newImage;
+    }
+    if (pickImage == PickImage.socmed3) {
+      _pickedSocmed3.value = newImage;
+      settings.socmed3.icon = newImage;
     }
   }
 
@@ -140,6 +166,45 @@ class _MySettingsFormState extends ConsumerState<MySettingsForm> {
                   label: 'Background',
                   image: MemoryImage(base64Decode(value)),
                   onGantiButtonPressed: () => pickImage(PickImage.background),
+                );
+              },
+            ),
+            const SizedBox(height: 15),
+            ValueListenableBuilder(
+              valueListenable: _pickedSocmed1,
+              builder: (context, value, child) {
+                return MySocmedFormField(
+                  icon: value,
+                  initialValue: settings.socmed1.link,
+                  onIconPressed: () => pickImage(PickImage.socmed1),
+                  onTextFieldChanged: (String value) =>
+                      settings.socmed1.link = value,
+                );
+              },
+            ),
+            const SizedBox(height: 15),
+            ValueListenableBuilder(
+              valueListenable: _pickedSocmed2,
+              builder: (context, value, child) {
+                return MySocmedFormField(
+                  icon: value,
+                  initialValue: settings.socmed2.link,
+                  onIconPressed: () => pickImage(PickImage.socmed2),
+                  onTextFieldChanged: (String value) =>
+                      settings.socmed2.link = value,
+                );
+              },
+            ),
+            const SizedBox(height: 15),
+            ValueListenableBuilder(
+              valueListenable: _pickedSocmed3,
+              builder: (context, value, child) {
+                return MySocmedFormField(
+                  icon: value,
+                  initialValue: settings.socmed3.link,
+                  onIconPressed: () => pickImage(PickImage.socmed3),
+                  onTextFieldChanged: (String value) =>
+                      settings.socmed3.link = value,
                 );
               },
             ),

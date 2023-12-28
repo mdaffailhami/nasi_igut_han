@@ -4,9 +4,12 @@ import 'package:nasi_igut_han/components/about_us.dart';
 import 'package:nasi_igut_han/components/contact_us_form.dart';
 import 'package:nasi_igut_han/components/faq.dart';
 import 'package:nasi_igut_han/components/products.dart';
+import 'package:nasi_igut_han/models/settings.dart';
+import 'package:nasi_igut_han/providers/settings_provider.dart';
 import 'package:nasi_igut_han/widgets/navigation_button.dart';
+import 'package:nasi_igut_han/widgets/socmed_icon_button.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends ConsumerWidget {
   const MyDrawer({Key? key}) : super(key: key);
 
   Widget navTile(
@@ -30,7 +33,25 @@ class MyDrawer extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider) as Settings;
+
+    final socmedIconButtons = [
+      MySocmedIconButton(
+        icon: settings.socmed1.icon,
+        url: settings.socmed1.link,
+        // url: 'https://wa.me/628875431260',
+      ),
+      MySocmedIconButton(
+        icon: settings.socmed2.icon,
+        url: settings.socmed2.link,
+        // url: 'https://www.instagram.com/nasi_igut_han/',
+      ),
+      MySocmedIconButton(
+        icon: settings.socmed3.icon,
+        url: settings.socmed3.link,
+      ),
+    ];
     return Drawer(
       child: Column(
         children: [
@@ -92,11 +113,11 @@ class MyDrawer extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          const Wrap(
+                          Wrap(
                             alignment: WrapAlignment.center,
                             spacing: 30,
                             runSpacing: 10,
-                            children: MyAboutUs.socmedIconButtons,
+                            children: socmedIconButtons,
                           ),
                         ],
                       ),

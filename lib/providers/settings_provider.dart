@@ -3,16 +3,21 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:nasi_igut_han/models/settings.dart';
+import 'package:nasi_igut_han/models/socmed.dart';
 
 class SettingsNotifier extends StateNotifier<Settings> {
   SettingsNotifier()
       : super(Settings(
-            logo: defaultImage,
-            title: '',
-            quote: '',
-            aboutUs: '',
-            banner: defaultImage,
-            background: defaultImage));
+          logo: defaultImage,
+          title: '',
+          quote: '',
+          aboutUs: '',
+          banner: defaultImage,
+          background: defaultImage,
+          socmed1: Socmed(icon: defaultImage, link: ''),
+          socmed2: Socmed(icon: defaultImage, link: ''),
+          socmed3: Socmed(icon: defaultImage, link: ''),
+        ));
 
   Future<void> load() async {
     final res = await http.get(
