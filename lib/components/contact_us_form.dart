@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class MyContactUsForm extends StatefulWidget {
   const MyContactUsForm({Key? key}) : super(key: key);
@@ -25,14 +28,14 @@ class _MyContactUsFormState extends State<MyContactUsForm> {
       SnackBar(
         duration: const Duration(seconds: 10),
         content: const Text(
-          'Message sent!',
+          'Pesan terkirim!',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
         backgroundColor: Colors.green,
         action: SnackBarAction(
-          label: 'Dismiss',
+          label: 'Tutup',
           textColor: Theme.of(context).colorScheme.secondary,
           onPressed: () {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -48,14 +51,14 @@ class _MyContactUsFormState extends State<MyContactUsForm> {
       SnackBar(
         duration: const Duration(seconds: 10),
         content: Text(
-          'Failed to send message!',
+          'Gagal mengirim pesan!',
           style: TextStyle(
             color: Theme.of(context).colorScheme.onError,
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.error,
         action: SnackBarAction(
-          label: 'Dismiss',
+          label: 'Tutup',
           textColor: Theme.of(context).colorScheme.secondary,
           onPressed: () {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -63,6 +66,41 @@ class _MyContactUsFormState extends State<MyContactUsForm> {
         ),
       ),
     );
+  }
+
+  Future<void> onSendButtonPressed() async {
+    final Uri url = Uri.parse(
+      '${const String.fromEnvironment('API_URL')}/contact-us',
+    );
+
+    final Map data = {
+      'name': _name,
+      'email': _email,
+      'message': _message,
+    };
+
+    setState(() => _isSending = true);
+
+    try {
+      http.Response send = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(data),
+      );
+      Map responseBody = jsonDecode(send.body);
+
+      setState(() => _isSending = false);
+
+      if (responseBody['status']) {
+        sendMessageSuccessSnackBar();
+      } else {
+        sendMessageFailedSnackBar();
+      }
+    } catch (e) {
+      setState(() => _isSending = false);
+
+      sendMessageFailedSnackBar();
+    }
   }
 
   @override
@@ -136,42 +174,7 @@ class _MyContactUsFormState extends State<MyContactUsForm> {
                     width: double.infinity,
                     height: 32,
                     child: FilledButton(
-                      onPressed: () async {
-                        // final Uri url = Uri.parse(
-                        //   'https://mdaffailhami.herokuapp.com/api/contact-me',
-                        // );
-
-                        // final Map data = {
-                        //   'name': _name,
-                        //   'email': _email,
-                        //   'message': _message,
-                        // };
-
-                        // setState(() {
-                        //   _isSending = true;
-                        // });
-
-                        // try {
-                        //   http.Response send = await http.post(url, body: data);
-                        //   Map responseBody = jsonDecode(send.body);
-
-                        //   setState(() {
-                        //     _isSending = false;
-                        //   });
-
-                        //   if (responseBody['status']) {
-                        //     sendMessageSuccessSnackBar();
-                        //   } else {
-                        //     sendMessageFailedSnackBar();
-                        //   }
-                        // } catch (e) {
-                        //   setState(() {
-                        //     _isSending = false;
-                        //   });
-
-                        //   sendMessageFailedSnackBar();
-                        // }
-                      },
+                      onPressed: () => onSendButtonPressed(),
                       child: const Text('Kirim'),
                     ),
                   )
