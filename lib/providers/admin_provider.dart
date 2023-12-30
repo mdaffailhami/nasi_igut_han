@@ -53,6 +53,20 @@ class AdminNotifier extends StateNotifier<Admin?> {
 
     return jsonDecode(res.body)['status'];
   }
+
+  Future<bool> changePassword(String email, String newPassword) async {
+    final hashedPassword = sha1.convert(utf8.encode(newPassword)).toString();
+
+    final res = await http.patch(
+      Uri.parse(
+        '${const String.fromEnvironment('API_URL')}/admins?email=${const String.fromEnvironment('ADMIN_EMAIL')}',
+      ),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'password': hashedPassword}),
+    );
+
+    return jsonDecode(res.body)['status'];
+  }
 }
 
 final adminProvider = StateNotifierProvider((ref) => AdminNotifier());

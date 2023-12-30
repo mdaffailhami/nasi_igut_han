@@ -22,11 +22,12 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         useMaterial3: true,
       ),
-      home: Consumer(builder: (context, ref, child) {
-        ref.read(adminProvider.notifier).signIn(
-            Admin(email: 'ilhamvocalovi@gmail.com', password: '12345678'));
-        return const MyHomePage();
-      }),
+      home: MySignInPage(),
+      // home: Consumer(builder: (context, ref, child) {
+      //   ref.read(adminProvider.notifier).signIn(
+      //       Admin(email: 'ilhamvocalovi@gmail.com', password: '12345678'));
+      //   return const MyHomePage();
+      // }),
     );
   }
 }
