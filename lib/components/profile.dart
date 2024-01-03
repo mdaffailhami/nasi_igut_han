@@ -12,44 +12,32 @@ class MyProfile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider) as Settings;
 
-    return Column(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: 67,
+          radius: 80,
           backgroundColor: Colors.transparent,
           backgroundImage: MemoryImage(base64Decode(settings.logo)),
         ),
-        const SizedBox(height: 4),
-        Text(
-          settings.title,
-          style: const TextStyle(fontSize: 32, color: Colors.white),
+        const SizedBox(width: 20),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SelectableText(
+              settings.title,
+              style: const TextStyle(fontSize: 50, color: Colors.white),
+            ),
+            SelectableText(
+              settings.quote,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(color: Colors.white),
+            ),
+          ],
         ),
-        // const SizedBox(height: 2),
-        // RichText(
-        //   text: TextSpan(
-        //     style:
-        //         Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
-        //     children: [
-        //       const TextSpan(text: '<'),
-        //       TextSpan(
-        //           text: 'code',
-        //           style: TextStyle(
-        //               color: Theme.of(context).colorScheme.secondaryContainer)),
-        //       const TextSpan(text: '> Programmer'),
-        //       TextSpan(
-        //           text: ' | ',
-        //           style: TextStyle(
-        //               color: Theme.of(context).colorScheme.secondaryContainer)),
-        //       const TextSpan(text: 'Developer </'),
-        //       TextSpan(
-        //           text: 'code',
-        //           style: TextStyle(
-        //               color: Theme.of(context).colorScheme.secondaryContainer)),
-        //       const TextSpan(text: '>'),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }
