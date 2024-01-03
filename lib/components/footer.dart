@@ -1,49 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nasi_igut_han/models/settings.dart';
+import 'package:nasi_igut_han/providers/settings_provider.dart';
 
-class MyFooter extends StatelessWidget {
+class MyFooter extends ConsumerWidget {
   const MyFooter({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider) as Settings;
+
     return SizedBox(
       width: double.infinity,
       // height: 200,
       child: ColoredBox(
         color: Theme.of(context).colorScheme.background,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 32),
           child: Column(
             children: [
               SelectableText(
-                '| Last update on November 16, 2023 |',
+                '| © 2024 ${settings.title} - All Rights Reserved |',
                 style: Theme.of(context)
                     .textTheme
-                    .bodySmall
-                    ?.copyWith(fontSize: 14),
-              ),
-              const SizedBox(height: 5),
-              SelectableText(
-                '| Released on February 8, 2021 |',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(fontSize: 14),
-              ),
-              const SizedBox(height: 10),
-              SelectableText(
-                '~Built by Muhammad Daffa Ilhami~',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(fontSize: 14),
-              ),
-              const SizedBox(height: 10),
-              SelectableText(
-                '--Version 2.0.6--',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(fontSize: 14),
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w500),
               ),
             ],
           ),
