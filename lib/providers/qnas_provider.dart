@@ -56,12 +56,14 @@ class QNASNotifier extends StateNotifier<List<QNA>> {
       body: jsonEncode(qna.toMap()),
     );
 
-    final bool status = jsonDecode(res.body)['status'];
+    final resBody = jsonDecode(res.body);
 
     // Jika data gagal ditambahkan
-    if (!status) return false;
+    if (!resBody['status']) return false;
 
     final newState = [...state];
+
+    qna.id = resBody['insertedID'];
     newState.add(qna);
 
     state = newState;

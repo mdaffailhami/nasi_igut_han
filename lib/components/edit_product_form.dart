@@ -110,7 +110,7 @@ class _MyEditProductFormState extends ConsumerState<MyEditProductForm> {
           ),
           const SizedBox(height: 15),
           MyTextFormField(
-            labelText: 'Description',
+            labelText: 'Deskripsi',
             onChanged: (String value) => _product.description = value,
             onFieldSubmitted: (_) => onFormSubmitted(),
             initialValue: widget.product.description,
@@ -120,7 +120,7 @@ class _MyEditProductFormState extends ConsumerState<MyEditProductForm> {
             valueListenable: _pricePreview,
             builder: (context, value, child) {
               return MyTextFormField(
-                labelText: 'Price',
+                labelText: 'Harga',
                 keyboardType: TextInputType.number,
                 inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 suffix: Text(value),

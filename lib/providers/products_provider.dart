@@ -33,12 +33,14 @@ class ProductsNotifier extends StateNotifier<List<Product>> {
       body: jsonEncode(product.toMap()),
     );
 
-    final bool status = jsonDecode(res.body)['status'];
+    final resBody = jsonDecode(res.body);
 
     // Jika data gagal ditambahkan
-    if (!status) return false;
+    if (!resBody['status']) return false;
 
     final newState = [...state];
+
+    product.id = resBody['insertedID'];
     newState.add(product);
 
     state = newState;

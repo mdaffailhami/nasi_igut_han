@@ -7,6 +7,7 @@ class Rupiah {
 
   @override
   String toString() {
-    return NumberFormat.currency(locale: 'id', symbol: 'Rp').format(nilai);
+    return NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0)
+        .format(nilai);
   }
 }
