@@ -105,14 +105,13 @@ class _MyEditProductFormState extends ConsumerState<MyEditProductForm> {
           MyTextFormField(
             labelText: 'Nama',
             onChanged: (String value) => _product.name = value,
-            onFieldSubmitted: (_) => onFormSubmitted(),
             initialValue: widget.product.name,
           ),
           const SizedBox(height: 15),
           MyTextFormField(
             labelText: 'Deskripsi',
             onChanged: (String value) => _product.description = value,
-            onFieldSubmitted: (_) => onFormSubmitted(),
+            maxLines: null,
             initialValue: widget.product.description,
           ),
           const SizedBox(height: 15),
@@ -128,7 +127,6 @@ class _MyEditProductFormState extends ConsumerState<MyEditProductForm> {
                   _product.price.nilai = int.parse(value);
                   _pricePreview.value = '(${_product.price})';
                 },
-                onFieldSubmitted: (_) => onFormSubmitted(),
                 initialValue: widget.product.price.nilai.toString(),
               );
             },

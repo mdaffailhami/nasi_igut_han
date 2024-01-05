@@ -96,8 +96,9 @@ class MyProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = SelectableText(
+    final title = Text(
       product.name,
+      overflow: TextOverflow.ellipsis,
       style: Theme.of(context)
           .textTheme
           .titleLarge
@@ -145,7 +146,9 @@ class MyProductCard extends StatelessWidget {
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            title,
+                            Expanded(
+                              child: title,
+                            ),
                             PopupMenuButton(
                               tooltip: 'Buka menu',
                               onSelected: (value) {

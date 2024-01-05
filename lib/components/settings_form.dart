@@ -130,21 +130,19 @@ class _MySettingsFormState extends ConsumerState<MySettingsForm> {
             MyTextFormField(
               labelText: 'Judul',
               onChanged: (String value) => settings.title = value,
-              onFieldSubmitted: (_) => onFormSubmitted(),
               initialValue: settings.title,
             ),
             const SizedBox(height: 15),
             MyTextFormField(
               labelText: 'Quote',
               onChanged: (String value) => settings.quote = value,
-              onFieldSubmitted: (_) => onFormSubmitted(),
               initialValue: settings.quote,
             ),
             const SizedBox(height: 15),
             MyTextFormField(
               labelText: 'Tentang Kami',
+              maxLines: null,
               onChanged: (String value) => settings.aboutUs = value,
-              onFieldSubmitted: (_) => onFormSubmitted(),
               initialValue: settings.aboutUs,
             ),
             const SizedBox(height: 15),

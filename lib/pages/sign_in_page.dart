@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nasi_igut_han/models/admin.dart';
-import 'package:nasi_igut_han/pages/home_page.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
 import 'package:nasi_igut_han/widgets/text_form_field.dart';
 import 'package:http/http.dart' as http;
@@ -13,12 +12,16 @@ import 'package:http/http.dart' as http;
 class MySignInPage extends ConsumerStatefulWidget {
   const MySignInPage({super.key});
 
+  static const route = '/login';
+
   @override
   ConsumerState<MySignInPage> createState() => _MySignInPageState();
 }
 
 class _MySignInPageState extends ConsumerState<MySignInPage> {
   final ValueNotifier<bool> _isPasswordVisible = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> _isResetPasswordVisible =
+      ValueNotifier<bool>(false);
 
   final Admin _admin = Admin(email: '', password: '');
 
@@ -129,11 +132,28 @@ class _MySignInPageState extends ConsumerState<MySignInPage> {
                                     children: [
                                       const SelectableText(
                                           'Silahkan masukkan password yang baru'),
-                                      MyTextFormField(
-                                        labelText: 'Password Baru',
-                                        onChanged: (String value) =>
-                                            newPassword = value,
-                                      ),
+                                      ValueListenableBuilder(
+                                          valueListenable:
+                                              _isResetPasswordVisible,
+                                          builder: (context, value, child) {
+                                            return MyTextFormField(
+                                              labelText: 'Password Baru',
+                                              obscureText: !value,
+                                              onChanged: (String value) =>
+                                                  newPassword = value,
+                                              suffixIcon: IconButton(
+                                                onPressed: () {
+                                                  _isResetPasswordVisible
+                                                      .value = !value;
+                                                },
+                                                icon: value
+                                                    ? const Icon(
+                                                        Icons.visibility)
+                                                    : const Icon(
+                                                        Icons.visibility_off),
+                                              ),
+                                            );
+                                          }),
                                     ],
                                   ),
                                   actions: [
@@ -233,12 +253,7 @@ class _MySignInPageState extends ConsumerState<MySignInPage> {
     if (await ref.read(adminProvider.notifier).signIn(_admin)) {
       if (!context.mounted) return;
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const MyHomePage(),
-        ),
-      );
+      Navigator.pushNamed(context, '/');
     } else {
       if (!context.mounted) return;
 

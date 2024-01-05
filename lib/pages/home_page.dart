@@ -13,6 +13,8 @@ import 'package:nasi_igut_han/providers/settings_provider.dart';
 class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
+  static const route = '/';
+
   static final GlobalKey<ScaffoldMessengerState> scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 

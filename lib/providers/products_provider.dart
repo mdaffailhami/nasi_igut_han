@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/models/product.dart';
+import 'package:nasi_igut_han/providers/settings_provider.dart';
 
 class ProductsNotifier extends StateNotifier<List<Product>> {
   ProductsNotifier() : super([]);
@@ -25,6 +26,8 @@ class ProductsNotifier extends StateNotifier<List<Product>> {
   }
 
   Future<bool> insertOne(Product product) async {
+    if (product.image == '') product.image = defaultImage;
+
     final res = await http.post(
       Uri.parse(
         '${const String.fromEnvironment('API_URL')}/products',

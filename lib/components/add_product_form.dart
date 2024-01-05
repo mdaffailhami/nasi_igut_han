@@ -93,13 +93,12 @@ class _MyAddProductFormState extends ConsumerState<MyAddProductForm> {
           MyTextFormField(
             labelText: 'Nama',
             onChanged: (String value) => _product.name = value,
-            onFieldSubmitted: (_) => onFormSubmitted(),
           ),
           const SizedBox(height: 15),
           MyTextFormField(
             labelText: 'Deskripsi',
             onChanged: (String value) => _product.description = value,
-            onFieldSubmitted: (_) => onFormSubmitted(),
+            maxLines: null,
           ),
           const SizedBox(height: 15),
           ValueListenableBuilder(
@@ -114,7 +113,6 @@ class _MyAddProductFormState extends ConsumerState<MyAddProductForm> {
                   _product.price.nilai = int.parse(value);
                   _pricePreview.value = '(${_product.price})';
                 },
-                onFieldSubmitted: (_) => onFormSubmitted(),
               );
             },
           ),

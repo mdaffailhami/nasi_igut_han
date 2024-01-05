@@ -30,13 +30,11 @@ class _MyAddQNAFormState extends ConsumerState<MyAddQNAForm> {
           MyTextFormField(
             labelText: 'Question',
             onChanged: (String value) => _qna.question = value,
-            onFieldSubmitted: (_) => onFormSubmitted(),
           ),
           const SizedBox(height: 15),
           MyTextFormField(
             labelText: 'Answer',
             onChanged: (String value) => _qna.answer = value,
-            onFieldSubmitted: (_) => onFormSubmitted(),
           ),
         ],
       ),

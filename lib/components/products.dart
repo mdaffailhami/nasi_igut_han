@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nasi_igut_han/components/add_product_form.dart';
-import 'package:nasi_igut_han/models/product.dart';
-import 'package:nasi_igut_han/models/rupiah.dart';
 import 'package:nasi_igut_han/other/responsive_builder.dart';
 import 'package:nasi_igut_han/providers/admin_provider.dart';
 import 'package:nasi_igut_han/providers/products_provider.dart';
