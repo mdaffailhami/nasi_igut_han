@@ -47,7 +47,7 @@ class MyAboutUs extends ConsumerWidget {
           ),
           child: Center(
             child: SizedBox(
-              width: 400,
+              width: 550,
               child: Column(
                 children: [
                   SelectableText(

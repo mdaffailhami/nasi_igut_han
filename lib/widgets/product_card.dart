@@ -1,12 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nasi_igut_han/components/delete_product_dialog.dart';
 import 'package:nasi_igut_han/components/edit_product_form.dart';
 import 'package:nasi_igut_han/models/product.dart';
+import 'package:nasi_igut_han/models/settings.dart';
+import 'package:nasi_igut_han/pages/home_page.dart';
+import 'package:nasi_igut_han/providers/settings_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class MyProductCard extends StatelessWidget {
+class MyProductCard extends ConsumerWidget {
   const MyProductCard({
     super.key,
     required this.product,
@@ -16,7 +21,7 @@ class MyProductCard extends StatelessWidget {
   final Product product;
   final bool showMenuButton;
 
-  void onProductDetailButtonPressed(context) {
+  void onProductDetailButtonPressed(context, Settings settings) {
     showDialog(
       context: context,
       builder: (context) {
@@ -79,7 +84,41 @@ class MyProductCard extends StatelessWidget {
                         height: 40,
                         child: FilledButton.icon(
                           icon: const FaIcon(FontAwesomeIcons.whatsapp),
-                          onPressed: () {},
+                          onPressed: () async {
+                            final url =
+                                '${settings.socmed1.link}?text=Halo! Apakah ${product.name}-nya masih tersedia?'
+                                    .replaceAll(' ', '%20');
+
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              launchUrl(Uri.parse(url));
+                            } else {
+                              if (!context.mounted) return;
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Failed to launch URL!',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onError),
+                                  ),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.error,
+                                  action: SnackBarAction(
+                                    label: 'Dismiss',
+                                    textColor:
+                                        Theme.of(context).colorScheme.secondary,
+                                    onPressed: () {
+                                      MyHomePage.scaffoldKey.currentState
+                                          ?.hideCurrentSnackBar();
+                                      // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                           label: const Text('Pesan Sekarang'),
                         ),
                       ),
@@ -95,7 +134,9 @@ class MyProductCard extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider) as Settings;
+
     final title = Text(
       product.name,
       overflow: TextOverflow.ellipsis,
@@ -198,7 +239,8 @@ class MyProductCard extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                      onPressed: () => onProductDetailButtonPressed(context),
+                      onPressed: () =>
+                          onProductDetailButtonPressed(context, settings),
                       child: const Text('Detail Produk'),
                     ),
                   ),
