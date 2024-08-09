@@ -1,3 +1,11 @@
+<hr>
+
+**Note**: This is the repository for the Nasi Igut Han web app that was built on top of Flutter.
+
+Here's the Backend Server's Repository: [https://github.com/mdaffailhami/nasi_igut_han_server](https://github.com/mdaffailhami/nasi_igut_han_server)
+
+<hr>
+
 # Nasi Igut Han - Rice Ball Sales Information System
 Nasi Igut Han is a business specializing in selling rice balls. This information system was made in order to improve efficiency in sales operations and business management, as well as to expand market reach by allowing Riceball orders to be placed online.
   
